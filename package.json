@@ -16,9 +16,24 @@
   "build": {
     "appId": "net.ltcuk.scraper",
     "productName": "Mick George Portal Exporter",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Tohaker",
+        "repo": "mickgeorge-scraper"
+      }
+    ],
     "win": {
       "publish": [
         "github"
+      ],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     }
   },
@@ -45,9 +60,8 @@
     "electron": "electron .",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "pack": "electron-builder --dir",
-    "dist": "npm run build && electron-builder",
-    "postinstall": "electron-builder install-app-deps",
-    "release": "build"
+    "dist": "yarn build && electron-builder --win -p always",
+    "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {
     "extends": "react-app"
