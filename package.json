@@ -1,7 +1,27 @@
 {
   "name": "mickgeorge-scraper",
+  "description": "Web scraper for the Mick George Customer Portal",
   "version": "0.1.0",
+  "author": {
+    "name": "Miles Bardon",
+    "email": "milesbardon@gmail.com",
+    "url": "https://www.github.com/Tohaker"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tohaker/mickgeorge-scraper.git"
+  },
   "private": true,
+  "homepage": "./",
+  "build": {
+    "appId": "net.ltcuk.scraper",
+    "productName": "Mick George Portal Exporter",
+    "win": {
+      "publish": [
+        "github"
+      ]
+    }
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -10,16 +30,24 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "electron-updater": "^4.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "typescript": "~3.7.2"
   },
+  "main": "public/electron.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "release": "build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,5 +63,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^9.0.0",
+    "electron-builder": "^22.6.1"
   }
 }
