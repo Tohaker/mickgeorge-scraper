@@ -4,6 +4,8 @@ const { autoUpdater } = require("electron-updater");
 const path = require("path");
 const url = require("url");
 
+require("../server");
+
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
