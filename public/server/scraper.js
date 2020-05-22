@@ -16,11 +16,6 @@ async function closeBrowser() {
   await browser.close();
 }
 
-async function resetBrowser() {
-  await closeBrowser();
-  await startBrowser();
-}
-
 async function takeScreenshot() {
   await page.screenshot({ path: "image.png" });
 }
@@ -67,7 +62,6 @@ async function listAllCompanies() {
 module.exports = {
   startBrowser,
   closeBrowser,
-  resetBrowser,
   takeScreenshot,
   loginToPortal,
   listAllCompanies,

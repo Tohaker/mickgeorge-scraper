@@ -15,11 +15,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get("/reset", async (req, res) => {
-  await scraper.resetBrowser();
-  res.status(204);
-});
-
 app.get("/login", async (req, res) => {
   const username = req.query.username;
   const domain = req.query.domain;

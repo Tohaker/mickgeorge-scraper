@@ -1,24 +1,28 @@
 import React from "react";
 import styled from "styled-components";
-import Login from "./login";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import LoginContainer from "./Login";
+import Companies from "./companies";
 
 const App = () => {
-  const login = async (username: string, domain: string, password: string) => {
-    fetch(
-      `http://localhost:3001/login?username=${encodeURIComponent(
-        username
-      )}&domain=${encodeURIComponent(domain)}&password=${encodeURIComponent(
-        password
-      )}`
-    )
-      .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
+  const [companies, setCompanies] = React.useState([]);
 
   return (
-    <AppContainer>
-      <Login login={login} />
-    </AppContainer>
+    <Router>
+      <AppContainer>
+        <Route
+          path="/"
+          render={(props) => (
+            <LoginContainer setCompanies={setCompanies} {...props} />
+          )}
+          exact
+        />
+        <Route
+          path="/companies"
+          render={() => <Companies companies={companies} />}
+        />
+      </AppContainer>
+    </Router>
   );
 };
 
