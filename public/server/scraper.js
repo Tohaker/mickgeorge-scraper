@@ -1,4 +1,8 @@
 const puppeteer = require("puppeteer");
+const log = require("electron-log");
+
+log.transports.file.level = "info";
+log.transports.file.file = __dirname + "log.log";
 
 let chromePath = `C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe`;
 let browser;
@@ -16,8 +20,8 @@ async function closeBrowser() {
   await browser.close();
 }
 
-async function takeScreenshot() {
-  await page.screenshot({ path: "image.png" });
+async function takeScreenshot(imageName) {
+  await page.screenshot({ path: imageName });
 }
 
 async function loginToPortal(username, domain, password) {
@@ -46,15 +50,26 @@ async function listAllCompanies() {
     }
   );
 
-  const tableData = await page.evaluate(() => {
-    const links = Array.from(document.querySelectorAll("table tbody tr td a"));
-    return links
-      .map((a) => ({
-        name: a.innerHTML,
-        link: a.getAttribute("href"),
-      }))
-      .filter((link) => !link.name.includes("icon-screenshot"));
-  });
+  let tableData = [];
+
+  try {
+    tableData = await page.evaluate(() => {
+      const links = Array.from(
+        document.querySelectorAll("table tbody tr td a")
+      );
+      return links
+        .map((a) => ({
+          name: a.innerHTML,
+          link: a.getAttribute("href"),
+        }))
+        .filter((link) => !link.name.includes("icon-screenshot"));
+    });
+  } catch (err) {
+    log.warn(
+      "Couldn't find the table data. Perhaps the login was incorrect?",
+      err
+    );
+  }
 
   return tableData;
 }

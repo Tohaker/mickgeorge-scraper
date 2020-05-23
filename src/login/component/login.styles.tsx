@@ -1,4 +1,9 @@
-import styled from "Login/component/node_modules/styled-components";
+import styled from "styled-components";
+
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 export const LoginPane = styled.div`
   display: flex;
@@ -34,4 +39,12 @@ export const LoginButton = styled.button`
   font-size: 18px;
 `;
 
-export const LoadingSpinner = styled.div``;
+export const FailureMessage = styled.div`
+  padding: 10px 0;
+  background-color: red;
+  color: white;
+  border-radius: 6px;
+  margin-top: 8px;
+  font-size-18px;
+  text-align: center;
+`;

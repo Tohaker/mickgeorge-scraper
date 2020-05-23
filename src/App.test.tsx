@@ -15,6 +15,10 @@ describe("App", () => {
     App = require("./App").default;
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("renders the login container by default", () => {
     const history = createMemoryHistory();
     const { container } = render(
