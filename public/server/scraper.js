@@ -1,4 +1,4 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const log = require("electron-log");
 
 log.transports.file.level = "info";

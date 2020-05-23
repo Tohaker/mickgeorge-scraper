@@ -1,7 +1,7 @@
 {
   "name": "mickgeorge-scraper",
   "description": "Web scraper for the Mick George Customer Portal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Miles Bardon",
     "email": "milesbardon@gmail.com",
@@ -16,6 +16,10 @@
   "build": {
     "appId": "net.ltcuk.scraper",
     "productName": "Mick George Portal Exporter",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
     "publish": [
       {
         "provider": "github",
@@ -51,7 +55,7 @@
     "electron-log": "^4.2.0",
     "electron-updater": "^4.3.1",
     "express": "^4.17.1",
-    "puppeteer": "^3.1.0",
+    "puppeteer-core": "^3.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
