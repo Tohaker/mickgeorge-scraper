@@ -72,7 +72,8 @@
     "electron": "electron .",
     "electron-dev": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "pack": "electron-builder --dir",
-    "dist": "yarn build && electron-builder --win -p always",
+    "predist": "yarn build",
+    "dist": "electron-builder --win -p always",
     "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {
