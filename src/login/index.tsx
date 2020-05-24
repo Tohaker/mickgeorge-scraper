@@ -8,11 +8,14 @@ interface LoginProps extends RouteComponentProps {
 }
 
 const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
-  const submitCredentials = async (
-    username: string,
-    domain: string,
-    password: string
-  ) => {
+  const [username, setUsername] = React.useState("");
+  const [domain, setDomain] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(true);
+
+  const submitCredentials = async () => {
     const companies = await login(username, domain, password);
     if (companies.length > 0) {
       setCompanies(companies);
@@ -23,7 +26,30 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     }
   };
 
-  return <LoginComponent submitCredentials={submitCredentials} />;
+  React.useEffect(() => {
+    if (!success) {
+      setLoading(false);
+    }
+  }, [success]);
+
+  const onSubmit = async () => {
+    setLoading(true);
+    setSuccess(await submitCredentials());
+  };
+
+  const props = {
+    username,
+    domain,
+    password,
+    loading,
+    success,
+    setUsername,
+    setDomain,
+    setPassword,
+    onSubmit,
+  };
+
+  return <LoginComponent {...props} />;
 };
 
 export default LoginContainer;

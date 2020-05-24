@@ -1,12 +1,22 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 describe("Login Component", () => {
-  let LoginComponent;
-
-  const mockSubmit = jest.fn();
+  let LoginComponent: React.FC;
+  let props: any;
 
   beforeEach(() => {
+    props = {
+      username: "username",
+      domain: "domain",
+      password: "password",
+      loading: false,
+      success: true,
+      setUsername: jest.fn(),
+      setDomain: jest.fn(),
+      setPassword: jest.fn(),
+      onSubmit: jest.fn(),
+    };
     LoginComponent = require(".").default;
   });
 
@@ -14,10 +24,8 @@ describe("Login Component", () => {
     jest.clearAllMocks();
   });
 
-  it("should render the login form", () => {
-    const { getByRole, getByLabelText } = render(
-      <LoginComponent submitCredentials={mockSubmit} />
-    );
+  it("should render the login form with default props", () => {
+    const { getByRole, getByLabelText } = render(<LoginComponent {...props} />);
 
     const usernameInput = getByRole("textbox", { name: /username/i });
     const domainInput = getByRole("textbox", { name: /domain/i });
@@ -30,26 +38,17 @@ describe("Login Component", () => {
     expect(loginButton).toBeInTheDocument();
   });
 
-  describe("given the login button is pressed", () => {
-    it("should call submitCredentials and show the loading indicator", () => {
-      const { getByRole, getByLabelText, getByText, getByTestId } = render(
-        <LoginComponent submitCredentials={mockSubmit} />
-      );
+  it("should render the login form in loading state", () => {
+    props.loading = true;
+    const { getByText } = render(<LoginComponent {...props} />);
 
-      const usernameInput = getByRole("textbox", { name: /username/i });
-      const domainInput = getByRole("textbox", { name: /domain/i });
-      const passwordInput = getByLabelText(/password/i);
+    expect(getByText(/Loading.../i)).toBeInTheDocument();
+  });
 
-      fireEvent.change(usernameInput, { target: { value: "username" } });
-      fireEvent.change(domainInput, { target: { value: "domain" } });
-      fireEvent.change(passwordInput, { target: { value: "password" } });
-      fireEvent.submit(getByTestId("form"));
+  it("should render failure message when success is false", () => {
+    props.success = false;
+    const { getByText } = render(<LoginComponent {...props} />);
 
-      expect(mockSubmit).toBeCalledWith("username", "domain", "password");
-      expect(usernameInput).not.toBeInTheDocument();
-      expect(domainInput).not.toBeInTheDocument();
-      expect(passwordInput).not.toBeInTheDocument();
-      expect(getByText(/Loading.../i)).toBeInTheDocument();
-    });
+    expect(getByText(/Incorrect Login/i)).toBeInTheDocument();
   });
 });

@@ -10,8 +10,8 @@ describe("App", () => {
   const mockCompanies = jest.fn(() => <div>Companies</div>);
 
   beforeEach(() => {
-    jest.mock("./Login", () => mockLoginContainer);
-    jest.mock("./Companies", () => mockCompanies);
+    jest.mock("./login", () => mockLoginContainer);
+    jest.mock("./companies", () => mockCompanies);
     App = require("./App").default;
   });
 

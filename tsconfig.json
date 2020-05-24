@@ -16,6 +16,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src", "node_modules/@types/styled-components"],
-  "exclude": ["./**/*.test.tsx"]
+  "include": ["src", "node_modules/@types/styled-components"]
 }
