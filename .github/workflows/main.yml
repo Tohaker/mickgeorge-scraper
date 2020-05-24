@@ -29,6 +29,18 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/master'
     steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn
+
       - name: Create GitHub release
         run: |
           GH_TOKEN=$GITHUB_TOKEN
