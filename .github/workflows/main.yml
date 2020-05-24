@@ -30,6 +30,6 @@ jobs:
     if: github.ref == 'refs/head/master'
     steps:
         - name: Create GitHub release
-        - runs: |
+        - run: |
             GH_TOKEN=$GITHUB_TOKEN
             yarn dist
