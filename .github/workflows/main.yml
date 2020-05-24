@@ -29,7 +29,7 @@ jobs:
     needs: test
     if: github.ref == 'refs/head/master'
     steps:
-        - name: Create GitHub release
-        - run: |
-            GH_TOKEN=$GITHUB_TOKEN
-            yarn dist
+      - name: Create GitHub release
+        run: |
+          GH_TOKEN=$GITHUB_TOKEN
+          yarn dist
