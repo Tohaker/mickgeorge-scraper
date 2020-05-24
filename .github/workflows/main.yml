@@ -4,7 +4,7 @@ on: push
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -25,7 +25,7 @@ jobs:
         run: yarn test
 
   release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: test
     if: github.ref == 'refs/heads/master'
     steps:
@@ -42,6 +42,6 @@ jobs:
         run: yarn
 
       - name: Create GitHub release
-        run: |
-          GH_TOKEN=$GITHUB_TOKEN
-          yarn dist
+        run: yarn dist
+        env:
+          GH_TOKEN: ${{ github.token }}
