@@ -25,6 +25,20 @@ app.get("/login", async (req, res) => {
   res.json(companies);
 });
 
+app.get("/company", async (req, res) => {
+  const url = req.query.url;
+
+  const details = await scraper.getCompanyDetails(url);
+  res.json(details);
+});
+
+app.get("/employee", async (req, res) => {
+  const url = req.query.url;
+
+  const details = await scraper.getEmployeeDetails(url);
+  res.json(details);
+});
+
 app.listen(port, () =>
   console.log(`Server listening at http://localhost:${port}`)
 );

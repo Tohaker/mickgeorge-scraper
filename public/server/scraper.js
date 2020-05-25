@@ -1,17 +1,24 @@
 const puppeteer = require("puppeteer-core");
 const log = require("electron-log");
+const {
+  nextPage,
+  clickSearchButton,
+  getApplicationUsername,
+  getServiceSettings,
+} = require("./helpers");
 
 log.transports.file.level = "info";
-log.transports.file.file = __dirname + "log.log";
 
-let chromePath = `C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe`;
+let chromePath =
+  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+let baseUrl = "https://hosted.mickgeorge.co.uk/businessportal/";
 let browser;
 let page;
 
 async function startBrowser() {
   browser = await puppeteer.launch({
     executablePath: chromePath,
-    headless: true,
+    headless: false,
   });
   page = await browser.newPage();
 }
@@ -25,7 +32,7 @@ async function takeScreenshot(imageName) {
 }
 
 async function loginToPortal(username, domain, password) {
-  await page.goto("https://hosted.mickgeorge.co.uk/businessportal/login.jsp", {
+  await page.goto(`${baseUrl}login.jsp`, {
     waitUntil: "networkidle2",
   });
 
@@ -44,7 +51,7 @@ async function loginToPortal(username, domain, password) {
 
 async function listAllCompanies() {
   await page.goto(
-    "https://hosted.mickgeorge.co.uk/businessportal/searchorganizations.do?rootSearchKey=&sortSearchResults=true&name=",
+    `${baseUrl}searchorganizations.do?rootSearchKey=&sortSearchResults=true&name=`,
     {
       waitUntil: "networkidle2",
     }
@@ -52,26 +59,112 @@ async function listAllCompanies() {
 
   let tableData = [];
 
-  try {
-    tableData = await page.evaluate(() => {
-      const links = Array.from(
-        document.querySelectorAll("table tbody tr td a")
+  do {
+    try {
+      tableData = tableData.concat(
+        await page.evaluate(() => {
+          const links = Array.from(
+            document.querySelectorAll("table tbody tr td a")
+          );
+          return links
+            .map((a) => ({
+              name: a.innerHTML,
+              link: a.getAttribute("href"),
+            }))
+            .filter((link) => !link.name.includes("icon-screenshot"));
+        })
       );
-      return links
-        .map((a) => ({
-          name: a.innerHTML,
-          link: a.getAttribute("href"),
-        }))
-        .filter((link) => !link.name.includes("icon-screenshot"));
-    });
-  } catch (err) {
-    log.warn(
-      "Couldn't find the table data. Perhaps the login was incorrect?",
-      err
-    );
-  }
+    } catch (err) {
+      log.warn(
+        "Couldn't find the table data. Perhaps the login was incorrect?",
+        err
+      );
+    }
+  } while (await nextPage(page));
 
   return tableData;
+}
+
+async function parseEmployeeTable() {
+  await page.waitForNavigation({ waitUntil: "networkidle0" });
+  await page.waitForXPath("//td[@class='selectColumn']");
+
+  let tableData = [];
+
+  do {
+    try {
+      tableData = tableData.concat(
+        await page.evaluate(() => {
+          const rows = Array.from(document.querySelectorAll("table tbody tr"));
+          return rows
+            .map((row) => {
+              const data = row.children;
+              const username = data[1].innerText;
+              const status = data[2].innerText;
+              const firstName = data[3].innerText;
+              const surname = data[4].innerText;
+              const phone = data[5].innerText;
+              const extension = data[6].innerText;
+              const siteName = data[7].innerText;
+              const link =
+                (data[8].querySelector("a") &&
+                  data[8].querySelector("a").href) ||
+                "";
+
+              return {
+                username,
+                status,
+                firstName,
+                surname,
+                phone,
+                extension,
+                siteName,
+                link,
+              };
+            })
+            .filter((row) => !row.username.includes("Admin"));
+        })
+      );
+    } catch (err) {
+      log.warn("Couldn't find table data for this company", err);
+    }
+  } while (await nextPage(page));
+
+  return tableData;
+}
+
+async function getCompanyDetails(url) {
+  await page.goto(`${baseUrl}${url}`, { waitUntil: "networkidle2" });
+  const employeesBtn = (
+    await page.$x('//a[text()[contains(.,"Employees")]]')
+  )[0];
+
+  await employeesBtn.click();
+  await clickSearchButton(page);
+  return await parseEmployeeTable();
+}
+
+async function getEmployeeDetails(url) {
+  await page.goto(url, { waitUntil: "networkidle2" });
+
+  const appSelector = '//a/span[text()[contains(., "Applications")]]';
+  const serviceSelector = '//a/span[text()[contains(., "Service Settings")]]';
+
+  await page.waitForXPath(appSelector);
+  const applicationsBtn = (await page.$x(appSelector))[0];
+
+  await applicationsBtn.click();
+  await page.waitForNavigation({ waitUntil: "domcontentloaded" });
+  const appUserName = await getApplicationUsername(page);
+
+  await page.waitForXPath(serviceSelector);
+  const serviceSettingsBtn = (await page.$x(serviceSelector))[0];
+
+  await serviceSettingsBtn.click();
+  await page.waitForNavigation({ waitUntil: "domcontentloaded" });
+  const serviceSettings = await getServiceSettings(page);
+
+  return { appUserName, ...serviceSettings };
 }
 
 module.exports = {
@@ -80,4 +173,6 @@ module.exports = {
   takeScreenshot,
   loginToPortal,
   listAllCompanies,
+  getCompanyDetails,
+  getEmployeeDetails,
 };
