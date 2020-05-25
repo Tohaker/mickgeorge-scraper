@@ -21,6 +21,7 @@ describe("Company Component", () => {
 
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).toHaveAttribute("id", props.id);
+    expect(checkbox).toHaveAttribute("name", props.id);
     expect(checkbox).toHaveAttribute("value", props.value);
     expect(name).toBeInTheDocument();
   });

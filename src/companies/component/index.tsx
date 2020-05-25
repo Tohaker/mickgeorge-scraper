@@ -10,8 +10,10 @@ type Props = {
 const Company: React.FC<Props> = ({ name, id, value }) => {
   return (
     <Container>
-      <Checkbox type="checkbox" id={id} value={value} />
-      <CompanyName>{name}</CompanyName>
+      <CompanyName>
+        {name}
+        <Checkbox type="checkbox" id={id} name={id} value={value} />
+      </CompanyName>
     </Container>
   );
 };

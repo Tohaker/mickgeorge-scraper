@@ -8,6 +8,6 @@ export const Container = styled.div`
 
 export const Checkbox = styled.input``;
 
-export const CompanyName = styled.div`
+export const CompanyName = styled.label`
   font-size: 16px;
 `;
