@@ -1,7 +1,6 @@
 const log = require("electron-log");
 
 log.transports.file.level = "info";
-log.transports.file.file = __dirname + "log.log";
 
 async function nextPage(page) {
   const selector = '//a[text()="›"]';

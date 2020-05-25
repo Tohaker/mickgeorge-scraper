@@ -69,7 +69,7 @@ async function listAllCompanies() {
           return links
             .map((a) => ({
               name: a.innerHTML,
-              link: a.getAttribute("href"),
+              url: a.getAttribute("href"),
             }))
             .filter((link) => !link.name.includes("icon-screenshot"));
         })
