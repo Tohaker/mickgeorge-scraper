@@ -6,7 +6,9 @@ export const Container = styled.div`
   margin: 8px 12px;
 `;
 
-export const Checkbox = styled.input``;
+export const Checkbox = styled.input`
+  margin-left: auto;
+`;
 
 export const CompanyName = styled.label`
   font-size: 16px;
