@@ -9,15 +9,15 @@ import {
 } from "./login.styles";
 
 type Props = {
-  username: string;
-  domain: string;
-  password: string;
+  username?: string;
+  domain?: string;
+  password?: string;
   loading: boolean;
   success: boolean;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   setDomain: React.Dispatch<React.SetStateAction<string>>;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
-  onSubmit: () => void;
+  onSubmit: (event: React.ChangeEvent<HTMLFormElement>) => void;
 };
 
 const LoginComponent: React.FC<Props> = ({
