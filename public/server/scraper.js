@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer-core");
 const log = require("electron-log");
+const promiseRetry = require("promise-retry");
 const {
   nextPage,
   clickSearchButton,
@@ -18,7 +19,7 @@ let page;
 async function startBrowser() {
   browser = await puppeteer.launch({
     executablePath: chromePath,
-    headless: false,
+    headless: true,
   });
   page = await browser.newPage();
 }
@@ -134,7 +135,7 @@ async function parseEmployeeTable() {
 }
 
 async function getCompanyDetails(url) {
-  await page.goto(`${baseUrl}${url}`, { waitUntil: "networkidle2" });
+  await page.goto(`${baseUrl}${url}`, { waitUntil: "networkidle0" });
   const employeesBtn = (
     await page.$x('//a[text()[contains(.,"Employees")]]')
   )[0];
@@ -145,7 +146,15 @@ async function getCompanyDetails(url) {
 }
 
 async function getEmployeeDetails(url) {
-  await page.goto(url, { waitUntil: "networkidle2" });
+  await promiseRetry(
+    (retry, attempt) => {
+      page.goto(url, { waitUntil: "networkidle0" }).catch((err) => {
+        retry(err);
+        log.info(`Made ${attempt} attempts to get Employee details at ${url}`);
+      });
+    },
+    { minTimeout: 500, retries: 5 }
+  );
 
   const appSelector = '//a/span[text()[contains(., "Applications")]]';
   const serviceSelector = '//a/span[text()[contains(., "Service Settings")]]';

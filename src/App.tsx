@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import LoginContainer from "./login";
-import Companies from "./companies";
+import LoginContainer from "#/containers/login";
+import Companies from "#/containers/companyList";
 
 const App = () => {
   const [companies, setCompanies] = React.useState([]);

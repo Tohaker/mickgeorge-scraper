@@ -14,3 +14,50 @@ export const login = (username: string, domain: string, password: string) => {
 
   return response;
 };
+
+export type Employee = {
+  username: string;
+  status: string;
+  firstName: string;
+  surname: string;
+  phone: string;
+  extension: string;
+  siteName: string;
+  link: string;
+};
+
+export const scrapeCompany = (companyUrl: string): Promise<Array<Employee>> => {
+  const queryString = querystring.stringify({ url: companyUrl });
+  const url = `${SERVER_URL}/company?${queryString}`;
+
+  const response = fetch(url)
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+
+  return response;
+};
+
+export type ExtraEmployeeData = {
+  appUserName: string;
+  deviceType: string;
+  macAddress: string;
+};
+
+export const getEmployee = (
+  employeeUrl: string
+): Promise<ExtraEmployeeData> => {
+  const queryString = querystring.stringify({ url: employeeUrl });
+  const url = `${SERVER_URL}/employee?${queryString}`;
+
+  const response = fetch(url)
+    .then((res) => res.json())
+    .catch((err) => {
+      console.error(err);
+      return {};
+    });
+
+  return response;
+};

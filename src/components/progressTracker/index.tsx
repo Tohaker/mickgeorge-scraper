@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const ProgressTracker: React.FC<Props> = ({ current, message }) => {
   return (
     <Container>
-      <ProgressBar now={current} label={`${current}%`} />
+      <ProgressBar now={current} label={`${current.toFixed(1)}%`} />
       <MessageTitle>Details:</MessageTitle>
       <MessageBox value={message} readOnly />
     </Container>
