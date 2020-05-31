@@ -1,7 +1,8 @@
 import React from "react";
-import { Props } from "./companyList.types";
+import { CSVDownload } from "react-csv";
+import { Props, Data } from "./companyList.types";
 import { Container } from "./companyList.styles";
-import { scrapeCompany, getEmployee, Employee, ExtraEmployeeData } from "#/api";
+import { scrapeCompany, getEmployee } from "#/api";
 import CompanyList from "#/components/companyList";
 import ProgressTracker from "#/components/progressTracker";
 
@@ -12,8 +13,10 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   }));
 
   const [companyStates, setCompanyStates] = React.useState(initialState);
+  const [scrapedData, setScrapedData] = React.useState<Data>([]);
   const [progress, setProgress] = React.useState(0);
   const [message, setMessage] = React.useState("");
+  const [exportRequested, setExport] = React.useState(false);
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -23,6 +26,29 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
     setCompanyStates(companyStates);
   };
 
+  const exportToCSV = () => {
+    const headers = [
+      { label: "Username", key: "username" },
+      { label: "Status", key: "status" },
+      { label: "First Name", key: "firstName" },
+      { label: "Last Name", key: "surname" },
+      { label: "Application Username", key: "appUserName" },
+      { label: "Device Type", key: "deviceType" },
+      { label: "MAC Address", key: "macAddress" },
+      { label: "Phone Number", key: "phone" },
+      { label: "Extension", key: "extension" },
+      { label: "Site name", key: "siteName" },
+    ];
+
+    return (
+      <CSVDownload
+        data={scrapedData}
+        headers={headers}
+        target="_blank"
+      />
+    );
+  };
+
   const onSubmit = async () => {
     const areChecked = companyStates.filter((company) => company.checked);
 
@@ -30,7 +56,7 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
     let currentMessage = message;
     let companyCount = 0;
 
-    const fullData: Array<Employee & ExtraEmployeeData> = [];
+    const fullData: Data = [];
 
     for (const company of areChecked) {
       const { name, url } = company;
@@ -60,6 +86,7 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
       companyCount++;
     }
 
+    setScrapedData(fullData);
     console.log(fullData);
   };
 
@@ -70,7 +97,13 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
         onChange={onChange}
         onSubmit={onSubmit}
       />
-      <ProgressTracker current={progress} message={message} />
+      <ProgressTracker
+        current={progress}
+        message={message}
+        exportDisabled={scrapedData.length === 0}
+        onExport={() => setExport(true)}
+      />
+      {exportRequested && exportToCSV()}
     </Container>
   );
 };

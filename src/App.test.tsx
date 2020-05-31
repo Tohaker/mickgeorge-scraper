@@ -4,14 +4,14 @@ import { createMemoryHistory } from "history";
 import { render } from "@testing-library/react";
 
 describe("App", () => {
-  let App;
+  let App: React.FC<any>;
 
   const mockLoginContainer = jest.fn(() => <div>Login Container</div>);
   const mockCompanies = jest.fn(() => <div>Companies</div>);
 
   beforeEach(() => {
-    jest.mock("./login", () => mockLoginContainer);
-    jest.mock("./companies", () => mockCompanies);
+    jest.mock("#/containers/login", () => mockLoginContainer);
+    jest.mock("#/containers/companyList", () => mockCompanies);
     App = require("./App").default;
   });
 

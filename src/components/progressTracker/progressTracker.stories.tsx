@@ -1,4 +1,5 @@
 import React from "react";
+import { action } from "@storybook/addon-actions";
 import styled from "styled-components";
 import ProgressTracker from ".";
 
@@ -15,12 +16,15 @@ export default {
   excludeStories: /.*Data$/,
 };
 
-export const Default = () => <ProgressTracker current={60} />;
+export const Default = () => (
+  <ProgressTracker current={60} onExport={action("onExport")} />
+);
 
 export const WithMessage = () => (
   <ProgressTracker
     current={20}
     message={"Here is a message\nHere it is on another line!"}
+    onExport={action("onExport")}
   />
 );
 
@@ -30,5 +34,15 @@ export const WithScrollingMessage = () => (
     message={
       "Line\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\n"
     }
+    onExport={action("onExport")}
+  />
+);
+
+export const ExportEnabled = () => (
+  <ProgressTracker
+    current={20}
+    message={"Here is a message\nHere it is on another line!"}
+    exportDisabled={false}
+    onExport={action("onExport")}
   />
 );
