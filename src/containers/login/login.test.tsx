@@ -1,4 +1,5 @@
 import React from "react";
+import { createMemoryHistory } from "history";
 import {
   render,
   fireEvent,
@@ -12,9 +13,6 @@ describe("Login Container", () => {
 
   const mockLogin = jest.fn();
   const mockSetCompanies = jest.fn();
-  const mockHistory = {
-    push: jest.fn(),
-  };
 
   beforeEach(() => {
     jest.mock("#/api", () => ({
@@ -23,7 +21,7 @@ describe("Login Container", () => {
 
     props = {
       setCompanies: mockSetCompanies,
-      history: mockHistory,
+      history: createMemoryHistory(),
     };
 
     LoginContainer = require(".").default;

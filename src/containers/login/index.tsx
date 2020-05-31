@@ -1,11 +1,12 @@
 import React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { History } from "history";
 import LoginComponent from "#/components/login";
 import { login } from "#/api";
 
-interface LoginProps extends RouteComponentProps {
+type LoginProps = {
   setCompanies: React.Dispatch<React.SetStateAction<never[]>>;
-}
+  history: History;
+};
 
 const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
   const [username, setUsername] = React.useState("");

@@ -10,8 +10,8 @@ const App = () => {
     <Switch>
       <Route
         path="/"
-        render={(props) => (
-          <LoginContainer setCompanies={setCompanies} {...props} />
+        render={({ history }) => (
+          <LoginContainer setCompanies={setCompanies} history={history} />
         )}
         exact
       />

@@ -6,6 +6,19 @@ import { scrapeCompany, getEmployee } from "#/api";
 import CompanyList from "#/components/companyList";
 import ProgressTracker from "#/components/progressTracker";
 
+const headers = [
+  { label: "Username", key: "username" },
+  { label: "Status", key: "status" },
+  { label: "First Name", key: "firstName" },
+  { label: "Last Name", key: "surname" },
+  { label: "Application Username", key: "appUserName" },
+  { label: "Device Type", key: "deviceType" },
+  { label: "MAC Address", key: "macAddress" },
+  { label: "Phone Number", key: "directoryNumber" },
+  { label: "Extension", key: "extension" },
+  { label: "Site name", key: "siteName" },
+];
+
 const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   const initialState = companies.map((state) => ({
     ...state,
@@ -28,19 +41,6 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
 
   const exportToCSV = () => {
     setExport(false);
-
-    const headers = [
-      { label: "Username", key: "username" },
-      { label: "Status", key: "status" },
-      { label: "First Name", key: "firstName" },
-      { label: "Last Name", key: "surname" },
-      { label: "Application Username", key: "appUserName" },
-      { label: "Device Type", key: "deviceType" },
-      { label: "MAC Address", key: "macAddress" },
-      { label: "Phone Number", key: "directoryNumber" },
-      { label: "Extension", key: "extension" },
-      { label: "Site name", key: "siteName" },
-    ];
 
     return <CSVDownload data={scrapedData} headers={headers} target="_blank" />;
   };
@@ -83,7 +83,6 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
     }
 
     setScrapedData(fullData);
-    console.log(fullData);
   };
 
   return (
