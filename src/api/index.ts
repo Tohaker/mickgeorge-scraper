@@ -20,7 +20,6 @@ export type Employee = {
   status: string;
   firstName: string;
   surname: string;
-  phone: string;
   extension: string;
   siteName: string;
   link: string;
@@ -44,6 +43,7 @@ export type ExtraEmployeeData = {
   appUserName: string;
   deviceType: string;
   macAddress: string;
+  directoryNumber: string;
 };
 
 export const getEmployee = (

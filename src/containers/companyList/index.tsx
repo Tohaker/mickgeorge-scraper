@@ -27,6 +27,8 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   };
 
   const exportToCSV = () => {
+    setExport(false);
+
     const headers = [
       { label: "Username", key: "username" },
       { label: "Status", key: "status" },
@@ -35,18 +37,12 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
       { label: "Application Username", key: "appUserName" },
       { label: "Device Type", key: "deviceType" },
       { label: "MAC Address", key: "macAddress" },
-      { label: "Phone Number", key: "phone" },
+      { label: "Phone Number", key: "directoryNumber" },
       { label: "Extension", key: "extension" },
       { label: "Site name", key: "siteName" },
     ];
 
-    return (
-      <CSVDownload
-        data={scrapedData}
-        headers={headers}
-        target="_blank"
-      />
-    );
+    return <CSVDownload data={scrapedData} headers={headers} target="_blank" />;
   };
 
   const onSubmit = async () => {

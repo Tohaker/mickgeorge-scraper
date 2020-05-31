@@ -35,14 +35,17 @@ async function getApplicationUsername(page) {
 async function getServiceSettings(page) {
   const selectorDevice = '//input[@id="deviceType"]';
   const selectorMAC = '//input[@id="macAddress"]';
+  const selectorNumber = '//input[@id="currentDirectoryNumberID"]';
   await page.waitForXPath(selectorDevice);
 
   const deviceType = (await page.$x(selectorDevice))[0];
   const macAddress = (await page.$x(selectorMAC))[0];
+  const directoryNumber = (await page.$x(selectorNumber))[0];
 
   return {
     deviceType: await page.evaluate((x) => x.value, deviceType),
     macAddress: await page.evaluate((x) => x.value, macAddress),
+    directoryNumber: await page.evaluate((x) => x.value, directoryNumber),
   };
 }
 

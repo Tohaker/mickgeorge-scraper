@@ -104,7 +104,6 @@ async function parseEmployeeTable() {
               const status = data[2].innerText;
               const firstName = data[3].innerText;
               const surname = data[4].innerText;
-              const phone = data[5].innerText;
               const extension = data[6].innerText;
               const siteName = data[7].innerText;
               const link =
@@ -117,7 +116,6 @@ async function parseEmployeeTable() {
                 status,
                 firstName,
                 surname,
-                phone,
                 extension,
                 siteName,
                 link,
