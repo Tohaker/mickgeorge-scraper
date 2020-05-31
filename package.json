@@ -44,7 +44,7 @@
     },
     "nsis": {
       "license": "./license.txt",
-      "deleteAppDataOnUninstal": true
+      "deleteAppDataOnUninstall": true
     }
   },
   "dependencies": {
