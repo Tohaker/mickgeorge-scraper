@@ -21,7 +21,6 @@
       "build/**/*",
       "node_modules/**/*"
     ],
-    "icon": "./public/icon.ico",
     "publish": [
       {
         "provider": "github",
