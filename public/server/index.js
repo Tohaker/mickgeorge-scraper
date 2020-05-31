@@ -1,7 +1,15 @@
 const express = require("express");
+var timeout = require("connect-timeout");
 const scraper = require("./scraper");
 
 const app = express();
+app.use(timeout(30000));
+app.use(haltOnTimedout);
+
+function haltOnTimedout(req, res, next) {
+  if (!req.timedout) next();
+}
+
 const port = 3001;
 
 scraper.startBrowser();
