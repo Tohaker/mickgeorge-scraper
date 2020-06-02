@@ -1,23 +1,9 @@
 import React from "react";
-import { CSVDownload } from "react-csv";
 import { Props, Data } from "./companyList.types";
 import { Container } from "./companyList.styles";
 import { scrapeCompany, getEmployee } from "#/api";
 import CompanyList from "#/components/companyList";
 import ProgressTracker from "#/components/progressTracker";
-
-const headers = [
-  { label: "Username", key: "username" },
-  { label: "Status", key: "status" },
-  { label: "First Name", key: "firstName" },
-  { label: "Last Name", key: "surname" },
-  { label: "Application Username", key: "appUserName" },
-  { label: "Device Type", key: "deviceType" },
-  { label: "MAC Address", key: "macAddress" },
-  { label: "Phone Number", key: "directoryNumber" },
-  { label: "Extension", key: "extension" },
-  { label: "Site name", key: "siteName" },
-];
 
 const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   const initialState = companies.map((state) => ({
@@ -29,7 +15,6 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   const [scrapedData, setScrapedData] = React.useState<Data>([]);
   const [progress, setProgress] = React.useState(0);
   const [message, setMessage] = React.useState("");
-  const [exportRequested, setExport] = React.useState(false);
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -37,12 +22,6 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   ) => {
     companyStates[index].checked = event.target.checked;
     setCompanyStates(companyStates);
-  };
-
-  const exportToCSV = () => {
-    setExport(false);
-
-    return <CSVDownload data={scrapedData} headers={headers} target="_blank" />;
   };
 
   const onSubmit = async () => {
@@ -96,9 +75,8 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
         current={progress}
         message={message}
         exportDisabled={scrapedData.length === 0}
-        onExport={() => setExport(true)}
+        data={scrapedData}
       />
-      {exportRequested && exportToCSV()}
     </Container>
   );
 };

@@ -57,4 +57,28 @@ describe("Company List Container", () => {
     expect(mockGetEmployee).toHaveBeenCalledWith(mockEmployee.link);
     expect(mockGetEmployee).toHaveBeenCalledTimes(2);
   });
+
+  it("should increment the ProgressBar percentage", async () => {
+    mockScrapeCompany.mockImplementation(() =>
+      Promise.resolve([mockEmployee, mockEmployee, mockEmployee, mockEmployee])
+    );
+    mockGetEmployee.mockImplementation(() => Promise.resolve());
+
+    const { getByRole, getByText } = render(
+      <CompanyListContainer companies={companies} />
+    );
+
+    const checkbox1 = getByRole("checkbox", { name: "company1" });
+    const submitButton = getByRole("button", { name: "Submit" });
+    const progressBar = getByRole("progressbar");
+
+    expect(progressBar).toHaveAttribute("aria-valuenow", "0");
+
+    fireEvent.click(checkbox1);
+    fireEvent.click(submitButton);
+
+    await waitForElement(() => getByText(/100.0%/i));
+
+    expect(progressBar).toHaveAttribute("aria-valuenow", "100");
+  });
 });
