@@ -16,15 +16,27 @@ export default {
   excludeStories: /.*Data$/,
 };
 
-export const Default = () => (
-  <ProgressTracker current={60} onExport={action("onExport")} />
-);
+export const defaultData = {
+  data: [
+    {
+      username: "username",
+      status: "status",
+      firstName: "firstname",
+      surname: "surname",
+      extension: "extension",
+      siteName: "siteName",
+      link: "link",
+    },
+  ],
+};
+
+export const Default = () => <ProgressTracker current={60} {...defaultData} />;
 
 export const WithMessage = () => (
   <ProgressTracker
     current={20}
     message={"Here is a message\nHere it is on another line!"}
-    onExport={action("onExport")}
+    {...defaultData}
   />
 );
 
@@ -34,7 +46,7 @@ export const WithScrollingMessage = () => (
     message={
       "Line\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\nLine\n"
     }
-    onExport={action("onExport")}
+    {...defaultData}
   />
 );
 
@@ -43,6 +55,6 @@ export const ExportEnabled = () => (
     current={20}
     message={"Here is a message\nHere it is on another line!"}
     exportDisabled={false}
-    onExport={action("onExport")}
+    {...defaultData}
   />
 );

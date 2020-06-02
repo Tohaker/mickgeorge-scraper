@@ -1,16 +1,28 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import ProgressTracker from ".";
 
-const mockOnExport = jest.fn();
-
 describe("Progress Tracker", () => {
+  const data = [
+    {
+      username: "username",
+      status: "status",
+      firstName: "firstName",
+      surname: "surname",
+      extension: "ext",
+      siteName: "site",
+      link: "link",
+      appUserName: "appUserName",
+      deviceType: "deviceType",
+      macAddress: "macAddress",
+      directoryNumber: "directoryNumber",
+    },
+  ];
+
   beforeEach(() => jest.resetAllMocks());
 
   it("should render with a progress bar and no messages", () => {
-    const { getByRole } = render(
-      <ProgressTracker current={20} onExport={mockOnExport} />
-    );
+    const { getByRole } = render(<ProgressTracker current={20} data={data} />);
 
     const progressBar = getByRole("progressbar");
     const messageBox = getByRole("textbox");
@@ -24,7 +36,7 @@ describe("Progress Tracker", () => {
       <ProgressTracker
         current={20}
         message={"here\nis\nsome\nmessage"}
-        onExport={mockOnExport}
+        data={data}
       />
     );
 
@@ -33,21 +45,5 @@ describe("Progress Tracker", () => {
 
     expect(progressBar).toBeInTheDocument();
     expect(messageBox).toHaveValue("here\nis\nsome\nmessage");
-  });
-
-  it("should call onExport when the export button is clicked", () => {
-    const { getByRole } = render(
-      <ProgressTracker
-        current={20}
-        message={"here\nis\nsome\nmessage"}
-        exportDisabled={false}
-        onExport={mockOnExport}
-      />
-    );
-
-    const exportButton = getByRole("button");
-    fireEvent.click(exportButton);
-
-    expect(mockOnExport).toHaveBeenCalledTimes(1);
   });
 });
