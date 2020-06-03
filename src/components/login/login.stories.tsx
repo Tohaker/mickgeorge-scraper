@@ -31,6 +31,7 @@ export const defaultData = {
   onSubmit: (e) => {
     e.preventDefault();
   },
+  urlList: ["url1", "url2", "url3"],
 };
 
 export const Default = () => <Container {...defaultData} />;
