@@ -64,6 +64,7 @@ const LoginComponent: React.FC<Props> = ({
                 ))}
               </PortalSelect>
               <SettingsButton
+                data-testid="settings"
                 onClick={(e) => {
                   e.preventDefault();
                   setShowModal(true);
