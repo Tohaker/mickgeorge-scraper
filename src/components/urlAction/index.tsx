@@ -21,7 +21,14 @@ const UrlAction: React.FC<Props> = ({ url = "", add, remove }) => {
         onChange={(e) => setValue(e.target.value)}
         placeholder={url === "" ? "Enter a new URL" : ""}
       />
-      <Button onClick={() => buttonAction(value)}>{buttonSymbol}</Button>
+      <Button
+        onClick={() => {
+          buttonAction(value);
+          setValue("");
+        }}
+      >
+        {buttonSymbol}
+      </Button>
     </Container>
   );
 };

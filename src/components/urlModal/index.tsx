@@ -6,7 +6,7 @@ import {
   UrlList,
   ButtonContainer,
   SaveButton,
-  CancelButton,
+  ResetButton,
   Title,
   InnerContainer,
 } from "./urlModal.styles";
@@ -16,23 +16,39 @@ type Props = {
   add: (url: string) => void;
   remove: (url: string) => void;
   save: () => void;
-  cancel: () => void;
+  reset: () => void;
 };
 
-const URLModal: React.FC<Props> = ({ urls, add, remove, save, cancel }) => {
+const URLModal: React.FC<Props> = ({ urls, add, remove, save, reset }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        save();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
   return (
     <TransparentView>
-      <Modal>
+      <Modal ref={ref}>
         <InnerContainer>
           <Title>Edit your Portal URLs</Title>
           <UrlList>
             {urls.map((url, i) => (
               <UrlAction url={url} add={add} remove={remove} key={i} />
             ))}
+            <UrlAction url={""} add={add} remove={remove} />
           </UrlList>
           <ButtonContainer>
             <SaveButton onClick={save}>Save</SaveButton>
-            <CancelButton onClick={cancel}>Cancel</CancelButton>
+            <ResetButton onClick={reset}>Reset</ResetButton>
           </ButtonContainer>
         </InnerContainer>
       </Modal>

@@ -1,4 +1,5 @@
 import React from "react";
+import { action } from "@storybook/addon-actions";
 import Login from ".";
 
 export default {
@@ -31,7 +32,13 @@ export const defaultData = {
   onSubmit: (e) => {
     e.preventDefault();
   },
-  urlList: ["url1", "url2", "url3"],
+  urlList: [
+    "https://hosted.mickgeorge.co.uk/businessportal/",
+    "url1",
+    "url2",
+    "url3",
+  ],
+  openSettings: action("openSettings"),
 };
 
 export const Default = () => <Container {...defaultData} />;

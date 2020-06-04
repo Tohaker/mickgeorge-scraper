@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const TransparentView = styled.div`
   display: flex;
-  position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: #cccccc80;
@@ -10,9 +12,11 @@ export const TransparentView = styled.div`
 
 export const Modal = styled.div`
   margin: auto;
+  width: 40%;
   background-color: white;
   border-radius: 8px;
   border: 0px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 `;
 
 export const InnerContainer = styled.div`
@@ -31,7 +35,6 @@ export const UrlList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 40%;
   margin-bottom: 4px;
 `;
 
@@ -52,7 +55,7 @@ export const SaveButton = styled(Button)`
   margin-right: 6px;
 `;
 
-export const CancelButton = styled(Button)`
+export const ResetButton = styled(Button)`
   background-color: white;
   color: #0099cd;
 `;

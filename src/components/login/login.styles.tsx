@@ -58,7 +58,9 @@ export const PortalContainer = styled.div`
 
 export const SettingsButton = styled.button`
   background-color: transparent;
-  border: 0px;
+  border: 0;
+  padding: 0;
+  margin-left: 8px;
 
   :hover {
     svg > g > path {
@@ -80,4 +82,5 @@ export const PortalSelect = styled.select`
   border: 1px solid #ccc;
   border-radius: 4px;
   height: 28px;
+  width: 100%;
 `;
