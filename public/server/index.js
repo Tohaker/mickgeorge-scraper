@@ -23,6 +23,14 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.get("/portal", (req, res) => {
+  const url = req.query.url;
+
+  scraper.setBaseUrl(url);
+  res.status(204);
+  res.send();
+});
+
 app.get("/login", async (req, res) => {
   const username = req.query.username;
   const domain = req.query.domain;

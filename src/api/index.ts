@@ -1,6 +1,20 @@
 import querystring from "querystring";
 import { SERVER_URL } from "../constants";
 
+export const setPortalUrl = (newUrl: string) => {
+  const queryString = querystring.stringify({ url: newUrl });
+  const url = `${SERVER_URL}/portal?${queryString}`;
+
+  const response = fetch(url)
+    .then(() => true)
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+
+  return response;
+};
+
 export const login = (username: string, domain: string, password: string) => {
   const queryString = querystring.stringify({ username, domain, password });
   const url = `${SERVER_URL}/login?${queryString}`;

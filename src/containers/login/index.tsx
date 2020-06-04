@@ -2,7 +2,7 @@ import React from "react";
 import { History } from "history";
 import LoginComponent from "#/components/login";
 import URLModal from "#/components/urlModal";
-import { login } from "#/api";
+import { login, setPortalUrl } from "#/api";
 import { LOCALSTORAGE_URLLIST } from "#/constants";
 
 type LoginProps = {
@@ -60,11 +60,15 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
   }, [success]);
 
   const submitCredentials = async () => {
-    const companies = await login(username, domain, password);
-    if (companies.length > 0) {
-      setCompanies(companies);
-      history.push("/companies");
-      return true;
+    if (setPortalUrl(url)) {
+      const companies = await login(username, domain, password);
+      if (companies.length > 0) {
+        setCompanies(companies);
+        history.push("/companies");
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }

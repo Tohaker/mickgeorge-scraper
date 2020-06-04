@@ -16,6 +16,10 @@ let baseUrl = "https://hosted.mickgeorge.co.uk/businessportal/";
 let browser;
 let page;
 
+async function setBaseUrl(url) {
+  baseUrl = url;
+}
+
 async function startBrowser() {
   browser = await puppeteer.launch({
     executablePath: chromePath,
@@ -175,6 +179,7 @@ async function getEmployeeDetails(url) {
 }
 
 module.exports = {
+  setBaseUrl,
   startBrowser,
   closeBrowser,
   takeScreenshot,
