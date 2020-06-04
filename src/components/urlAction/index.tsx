@@ -16,6 +16,7 @@ const UrlAction: React.FC<Props> = ({ url = "", add, remove }) => {
   return (
     <Container>
       <UrlInput
+        type="text"
         value={value}
         readOnly={url !== ""}
         onChange={(e) => setValue(e.target.value)}
