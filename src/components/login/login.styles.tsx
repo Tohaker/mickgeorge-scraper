@@ -13,7 +13,6 @@ export const LoginPane = styled.div`
   flex-direction: column;
   text-align: left;
   justify-content: center;
-  width: 300px;
   padding: 12px;
   font-size: 14px;
   border: 1px solid #ccc;
@@ -50,4 +49,38 @@ export const FailureMessage = styled.div`
   margin-top: 8px;
   font-size-18px;
   text-align: center;
+`;
+
+export const PortalContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+export const SettingsButton = styled.button`
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  margin-left: 8px;
+
+  :hover {
+    svg > g > path {
+      fill: #0099cd;
+    }
+  }
+
+  svg {
+    height: 22px;
+    width: 22px;
+
+    g > path {
+      fill: #808080;
+    }
+  }
+`;
+
+export const PortalSelect = styled.select`
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 28px;
+  width: 100%;
 `;
