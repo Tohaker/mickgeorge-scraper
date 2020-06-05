@@ -1,40 +1,33 @@
 import React from "react";
-import { History } from "history";
 import LoginComponent from "#/components/login";
 import URLModal from "#/components/urlModal";
 import { login, setPortalUrl } from "#/api";
-import { LOCALSTORAGE_URLLIST } from "#/constants";
+import { LoginProps, StateProps, ActionProps } from "./login.types";
 
-type LoginProps = {
-  setCompanies: React.Dispatch<React.SetStateAction<never[]>>;
-  history: History;
-};
-
-type StateProps = {
-  urlList: Array<string>;
-};
-
-type ActionProps = {
-  type: "ADD" | "REMOVE" | "RESET";
-  payload: string;
-};
-
-const initialList: Array<string> = JSON.parse(
-  localStorage.getItem(LOCALSTORAGE_URLLIST) || '[""]'
-);
+const { ipcRenderer } = window.require("electron");
 
 const reducer = (state: StateProps, action: ActionProps) => {
   switch (action.type) {
     case "ADD":
-      state.urlList.push(action.payload);
-      localStorage.setItem(LOCALSTORAGE_URLLIST, JSON.stringify(state.urlList));
+      state.urlList.push(action.payload.newValue);
+      ipcRenderer.send("setStoreValue", {
+        key: "urls",
+        value: state.urlList,
+      });
       return { urlList: state.urlList };
     case "REMOVE":
-      const newList = state.urlList.filter((url) => url !== action.payload);
-      localStorage.setItem(LOCALSTORAGE_URLLIST, JSON.stringify(newList));
+      const newList = state.urlList.filter(
+        (url) => url !== action.payload.newValue
+      );
+      ipcRenderer.send("setStoreValue", { key: "urls", value: newList });
       return { urlList: newList };
     case "RESET":
-      return { urlList: initialList };
+      action.payload.initialValue &&
+        ipcRenderer.send("setStoreValue", {
+          key: "urls",
+          value: action.payload.initialValue,
+        });
+      return { urlList: action.payload.initialValue || [] };
     default:
       return { urlList: state.urlList };
   }
@@ -45,19 +38,39 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
   const [domain, setDomain] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showModal, setShowModal] = React.useState(false);
+
+  const [initialList, setInitialList] = React.useState([""]);
   const [state, dispatch] = React.useReducer(reducer, {
     urlList: initialList,
   });
-  const [url, setUrl] = React.useState(initialList[0]);
-
+  const [url, setUrl] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(true);
+
+  React.useEffect(() => {
+    (async () => {
+      const result: Array<string> = await ipcRenderer.invoke(
+        "getStoreValue",
+        "urls"
+      );
+      setInitialList(result);
+      dispatch({
+        type: "RESET",
+        payload: { newValue: "", initialValue: result },
+      });
+    })();
+  }, []);
 
   React.useEffect(() => {
     if (!success) {
       setLoading(false);
     }
   }, [success]);
+
+  React.useEffect(() => {
+    if (url !== "")
+      ipcRenderer.send("setStoreValue", { key: "selectedUrl", value: url });
+  }, [url]);
 
   const submitCredentials = async () => {
     if (setPortalUrl(url)) {
@@ -74,14 +87,14 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     }
   };
 
-  const addUrl = (newUrl: string) => {
-    if (newUrl !== "") {
-      dispatch({ type: "ADD", payload: newUrl });
+  const addUrl = (newValue: string) => {
+    if (newValue !== "") {
+      dispatch({ type: "ADD", payload: { newValue } });
     }
   };
 
   const removeUrl = (url: string) => {
-    dispatch({ type: "REMOVE", payload: url });
+    dispatch({ type: "REMOVE", payload: { newValue: url } });
   };
 
   const onSubmit = async () => {
@@ -96,7 +109,10 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
       remove={removeUrl}
       save={() => setShowModal(false)}
       reset={() => {
-        dispatch({ type: "RESET", payload: "" });
+        dispatch({
+          type: "RESET",
+          payload: { newValue: "", initialValue: initialList },
+        });
         setShowModal(false);
       }}
     />

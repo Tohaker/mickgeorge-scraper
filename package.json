@@ -60,6 +60,7 @@
     "bootstrap": "^4.5.0",
     "connect-timeout": "^1.9.0",
     "electron-log": "^4.2.0",
+    "electron-store": "^5.1.1",
     "electron-updater": "^4.3.1",
     "express": "^4.17.1",
     "promise-retry": "^1.1.1",
@@ -115,6 +116,7 @@
     "@testing-library/user-event": "^7.1.2",
     "electron": "^9.0.0",
     "electron-builder": "^22.6.1",
+    "electron-devtools-installer": "^3.0.0",
     "fetch-mock": "^9.10.1"
   }
 }

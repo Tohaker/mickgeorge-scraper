@@ -1,15 +1,57 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
+const {
+  default: installExtension,
+  REACT_DEVELOPER_TOOLS,
+} = require("electron-devtools-installer");
+const Store = require("electron-store");
 const path = require("path");
 const url = require("url");
 
+const schema = {
+  urls: {
+    type: "array",
+    items: {
+      type: "string",
+    },
+  },
+  selectedUrl: {
+    type: "string",
+  },
+};
+
 function createWindow() {
+  // Setup the JSON Store.
+  const store = new Store({ schema });
+  if (!!!store.get("urls")) {
+    store.set("urls", ["https://hosted.mickgeorge.co.uk/businessportal/"]);
+  }
+
+  if (!!!store.get("selectedUrl")) {
+    store.set("selectedUrl", "https://hosted.mickgeorge.co.uk/businessportal/");
+  }
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     autoHideMenuBar: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+  ipcMain.handle("getStoreValue", (event, key) => {
+    return store.get(key);
+  });
+
+  ipcMain.on("setStoreValue", (event, { key, value }) => {
+    if (value) {
+      store.set(key, value);
+    } else {
+      store.delete(key);
+    }
   });
 
   const startUrl =
@@ -40,6 +82,8 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  installExtension(REACT_DEVELOPER_TOOLS);
 });
 
 // Quit when all windows are closed.
