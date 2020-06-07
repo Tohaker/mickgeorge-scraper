@@ -83,7 +83,8 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
-  installExtension(REACT_DEVELOPER_TOOLS);
+  // Only install when running as dev
+  process.env.ELECTRON_START_URL && installExtension(REACT_DEVELOPER_TOOLS);
 });
 
 // Quit when all windows are closed.

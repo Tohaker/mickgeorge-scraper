@@ -57,10 +57,12 @@ const LoginComponent: React.FC<Props> = ({
             <PortalContainer>
               <PortalSelect
                 onChange={(e) => setUrl(e.target.selectedOptions[0].text)}
-                defaultValue={selectedUrl}
+                value={selectedUrl}
               >
                 {urlList.map((url, i) => (
-                  <option key={i}>{url}</option>
+                  <option value={url} key={i}>
+                    {url}
+                  </option>
                 ))}
               </PortalSelect>
               <SettingsButton

@@ -74,7 +74,7 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     loading,
     success,
     urlList,
-    selectedUrl: selectedUrl,
+    selectedUrl,
     setUsername,
     setDomain,
     setPassword,
