@@ -6,26 +6,39 @@ import {
   waitForElement,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-import { LOCALSTORAGE_URLLIST } from "#/constants";
 
 describe("Login Container", () => {
   let LoginContainer: React.FC;
   let props: any;
 
+  let response: Array<string>;
+
   const mockLogin = jest.fn();
   const mockSetPortalUrl = jest.fn();
   const mockSetCompanies = jest.fn();
-
-  const setItemSpy = jest.spyOn(window.localStorage.__proto__, "setItem");
-  const getItemSpy = jest.spyOn(window.localStorage.__proto__, "getItem");
+  const mockSend = jest.fn();
+  const mockInvoke = jest.fn();
 
   beforeEach(() => {
+    window.require = require;
+    response = ["url1", "url2"];
+
     jest.mock("#/api", () => ({
       login: mockLogin,
       setPortalUrl: mockSetPortalUrl,
     }));
 
-    getItemSpy.mockImplementation(() => JSON.stringify(["url1", "url2"]));
+    jest.mock("electron", () => ({
+      ipcRenderer: {
+        send: mockSend,
+        invoke: mockInvoke,
+      },
+    }));
+
+    mockInvoke.mockImplementation((key, value) => {
+      if (value === "urls") return Promise.resolve(response);
+      if (value === "selectedUrl") return Promise.resolve(response[0]);
+    });
 
     props = {
       setCompanies: mockSetCompanies,
@@ -128,13 +141,17 @@ describe("Login Container", () => {
   });
 
   describe("given the settings button is pressed", () => {
-    it("should display the urlModal", () => {
+    it("should display the urlModal", async () => {
       const { getByTestId, getByText, getAllByDisplayValue } = render(
         <LoginContainer {...props} />
       );
 
+      await waitForElement(() => getByText(/username/i));
+
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
+
+      await waitForElement(() => getByText(/Edit/i));
 
       const url1 = getAllByDisplayValue("url1")[1];
       const url2 = getAllByDisplayValue("url2")[0];
@@ -144,13 +161,17 @@ describe("Login Container", () => {
       expect(url2).toBeInTheDocument();
     });
 
-    it("should update the localStorage when a url is added", () => {
+    it("should update the store when a url is added", async () => {
       const { getByTestId, getByText, getAllByDisplayValue } = render(
         <LoginContainer {...props} />
       );
 
+      await waitForElement(() => getByText(/username/i));
+
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
+
+      await waitForElement(() => getByText(/Edit/i));
 
       const emptyInput = getAllByDisplayValue("")[3];
       const addButton = getByText("+");
@@ -158,53 +179,62 @@ describe("Login Container", () => {
       fireEvent.change(emptyInput, { target: { value: "test url" } });
       fireEvent.click(addButton);
 
-      expect(setItemSpy).toHaveBeenCalledWith(
-        LOCALSTORAGE_URLLIST,
-        expect.stringContaining("test url")
-      );
+      expect(mockSend).toHaveBeenCalledWith("setStoreValue", {
+        key: "urls",
+        value: ["url1", "url2", "test url"],
+      });
     });
 
-    it("should update the localStorage when a url is removed", () => {
-      const { getByTestId, getAllByText } = render(
+    it("should update the store when a url is removed", async () => {
+      const { getByTestId, getAllByText, getByText } = render(
         <LoginContainer {...props} />
       );
 
+      await waitForElement(() => getByText(/username/i));
+
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
+
+      await waitForElement(() => getByText(/Edit/i));
 
       const removeButton = getAllByText("-")[0];
 
       fireEvent.click(removeButton);
 
-      expect(setItemSpy).toHaveBeenCalledWith(
-        LOCALSTORAGE_URLLIST,
-        expect.not.stringContaining("url1")
-      );
+      expect(mockSend).toHaveBeenCalledWith("setStoreValue", {
+        key: "urls",
+        value: ["url2"],
+      });
     });
 
-    it("should reset to the starting value when reset is pressed", () => {
+    it("should reset to the starting value when reset is pressed", async () => {
       const { getByTestId, getByText } = render(<LoginContainer {...props} />);
+
+      await waitForElement(() => getByText(/username/i));
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
+
+      await waitForElement(() => getByText(/Edit/i));
 
       const resetButton = getByText("Reset");
       fireEvent.click(resetButton);
 
-      const initialValue = JSON.parse(
-        localStorage.getItem(LOCALSTORAGE_URLLIST) || '[""]'
-      );
-
-      initialValue.forEach((element: string) => {
-        expect(getByText(element)).toBeInTheDocument();
+      expect(mockSend).toHaveBeenCalledWith("setStoreValue", {
+        key: "urls",
+        value: ["url1", "url2"],
       });
     });
 
-    it("should close the modal when save is clicked", () => {
+    it("should close the modal when save is clicked", async () => {
       const { getByTestId, getByText } = render(<LoginContainer {...props} />);
+
+      await waitForElement(() => getByText(/username/i));
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
+
+      await waitForElement(() => getByText(/Edit/i));
 
       const saveButton = getByText("Save");
       fireEvent.click(saveButton);
