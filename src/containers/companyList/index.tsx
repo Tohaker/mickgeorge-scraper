@@ -5,6 +5,22 @@ import { scrapeCompany, getEmployee } from "#/api";
 import CompanyList from "#/components/companyList";
 import ProgressTracker from "#/components/progressTracker";
 
+const defaultEmployees: Data = [
+  {
+    username: "",
+    firstName: "",
+    surname: "",
+    status: "",
+    siteName: "",
+    extension: "",
+    link: "",
+    appUserName: "",
+    deviceType: "",
+    macAddress: "",
+    directoryNumber: "",
+  },
+];
+
 const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   const initialState = companies.map((state) => ({
     ...state,
@@ -36,6 +52,7 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
     for (const company of areChecked) {
       const { name, url } = company;
       currentMessage = `${currentMessage}> Scraping ${name}\n`;
+      fullData.push({ ...defaultEmployees[0], username: name }); // Adds a title row into the CSV for each company
       setMessage(currentMessage);
 
       const employees = await scrapeCompany(url);
@@ -49,7 +66,7 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
 
         const primaryProgress = companyCount / companyTotal;
         const secondaryProgress =
-          (employeeCount / employeeTotal) * (1 / companyTotal);
+          (employeeCount / employeeTotal) / companyTotal;
         setProgress((primaryProgress + secondaryProgress) * 100);
 
         employeeCount++;
