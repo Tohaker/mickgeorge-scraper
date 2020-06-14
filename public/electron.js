@@ -1,10 +1,6 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const {
-  default: installExtension,
-  REACT_DEVELOPER_TOOLS,
-} = require("electron-devtools-installer");
 const Store = require("electron-store");
 const path = require("path");
 const url = require("url");
@@ -82,9 +78,6 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-
-  // Only install when running as dev
-  process.env.ELECTRON_START_URL && installExtension(REACT_DEVELOPER_TOOLS);
 });
 
 // Quit when all windows are closed.
