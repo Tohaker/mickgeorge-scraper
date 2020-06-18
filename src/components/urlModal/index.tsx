@@ -16,11 +16,19 @@ type Props = {
   urls: Array<string>;
   add: (url: string) => void;
   remove: (url: string) => void;
+  update: (url: string, previous: string) => void;
   save: () => void;
   reset: () => void;
 };
 
-const URLModal: React.FC<Props> = ({ urls, add, remove, save, reset }) => {
+const URLModal: React.FC<Props> = ({
+  urls,
+  add,
+  remove,
+  save,
+  reset,
+  update,
+}) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -46,9 +54,15 @@ const URLModal: React.FC<Props> = ({ urls, add, remove, save, reset }) => {
           </Subtitle>
           <UrlList>
             {urls.map((url, i) => (
-              <UrlAction url={url} add={add} remove={remove} key={i} />
+              <UrlAction
+                url={url}
+                add={add}
+                remove={remove}
+                update={update}
+                key={i}
+              />
             ))}
-            <UrlAction url={""} add={add} remove={remove} />
+            <UrlAction url={""} add={add} remove={remove} update={update} />
           </UrlList>
           <ButtonContainer>
             <SaveButton onClick={save}>Save</SaveButton>

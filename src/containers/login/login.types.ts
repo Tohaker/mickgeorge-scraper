@@ -10,6 +10,10 @@ export type StateProps = {
 };
 
 export type ActionProps = {
-  type: "ADD" | "REMOVE" | "RESET";
-  payload: { newValue: string; initialValue?: Array<string> };
+  type: "ADD" | "REMOVE" | "RESET" | "UPDATE";
+  payload: {
+    newValue: string;
+    previousValue?: string;
+    initialValue?: Array<string>;
+  };
 };

@@ -21,4 +21,16 @@ export const Button = styled.button`
   background-color: #0099cd;
   color: white;
   text-align: center;
+
+  img {
+    margin-left: -3px;
+    margin-top: -3px;
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+export const Spacer = styled.div`
+  margin: 5px;
+  width: 26px;
 `;

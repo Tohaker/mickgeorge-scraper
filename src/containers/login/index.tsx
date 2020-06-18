@@ -55,6 +55,15 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     dispatch({ type: "REMOVE", payload: { newValue: url } });
   };
 
+  const updateUrl = (newUrl: string, previousUrl: string) => {
+    if (newUrl !== "") {
+      dispatch({
+        type: "UPDATE",
+        payload: { newValue: sanitizeUrl(newUrl), previousValue: previousUrl },
+      });
+    }
+  };
+
   const onSubmit = async () => {
     setLoading(true);
     setSuccess(await submitCredentials());
@@ -65,6 +74,7 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
       urls={urlList}
       add={addUrl}
       remove={removeUrl}
+      update={updateUrl}
       save={() => setShowModal(false)}
       reset={() => {
         dispatch({

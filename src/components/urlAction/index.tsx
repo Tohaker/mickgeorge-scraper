@@ -1,14 +1,20 @@
 import React from "react";
-import { Container, UrlInput, Button } from "./urlAction.styles";
+import { Container, UrlInput, Button, Spacer } from "./urlAction.styles";
+import editIcon from "#/assets/edit-white.png";
+import tickIcon from "#/assets/tick-white.png";
 
 type Props = {
-  url?: string;
+  url: string;
   add: (url: string) => void;
   remove: (url: string) => void;
+  update: (url: string, previous: string) => void;
 };
 
-const UrlAction: React.FC<Props> = ({ url = "", add, remove }) => {
+const UrlAction: React.FC<Props> = ({ url, add, remove, update }) => {
   const [value, setValue] = React.useState(url);
+  const [editMode, setEditMode] = React.useState(false);
+  console.log("url", url);
+  console.log("value", value);
 
   const buttonAction = url === "" ? add : remove;
   const buttonSymbol = url === "" ? "+" : "-";
@@ -18,18 +24,33 @@ const UrlAction: React.FC<Props> = ({ url = "", add, remove }) => {
       <UrlInput
         type="text"
         value={value}
-        readOnly={url !== ""}
-        onChange={(e) => setValue(e.target.value)}
+        readOnly={url !== "" && !editMode}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
         placeholder={url === "" ? "Enter a new URL" : ""}
       />
       <Button
         onClick={() => {
           buttonAction(value);
-          setValue("");
         }}
       >
         {buttonSymbol}
       </Button>
+      {buttonSymbol === "-" ? (
+        <Button
+          onClick={() => {
+            setEditMode(!editMode);
+            if (editMode && value !== url) {
+              update(value, url);
+            }
+          }}
+        >
+          <img src={editMode ? tickIcon : editIcon} alt="Edit" />
+        </Button>
+      ) : (
+        <Spacer />
+      )}
     </Container>
   );
 };

@@ -30,6 +30,15 @@ const reducer = (state: StateProps, action: ActionProps) => {
       );
       ipcRenderer.send("setStoreValue", { key: "urls", value: newList });
       return { urlList: newList };
+    case "UPDATE":
+      const updatedList = state.urlList.map((url) => {
+        if (url === action.payload.previousValue) {
+          return action.payload.newValue;
+        }
+        return url;
+      });
+      ipcRenderer.send("setStoreValue", { key: "urls", value: updatedList });
+      return { urlList: updatedList };
     case "RESET":
       action.payload.initialValue &&
         ipcRenderer.send("setStoreValue", {
