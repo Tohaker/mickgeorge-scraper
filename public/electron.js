@@ -2,8 +2,11 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const Store = require("electron-store");
+const contextMenu = require("electron-context-menu");
 const path = require("path");
 const url = require("url");
+
+contextMenu();
 
 const schema = {
   urls: {
