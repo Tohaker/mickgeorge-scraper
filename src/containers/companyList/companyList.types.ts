@@ -5,7 +5,9 @@ export type Company = {
   url: string;
 };
 
-export type Data = Array<Employee & ExtraEmployeeData>;
+export type Data = Array<
+  Employee & ExtraEmployeeData & { companyName: string }
+>;
 
 export type Props = {
   companies: Array<Company>;

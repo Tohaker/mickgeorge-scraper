@@ -52,7 +52,6 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
     for (const company of areChecked) {
       const { name, url } = company;
       currentMessage = `${currentMessage}> Scraping ${name}\n`;
-      fullData.push({ ...defaultEmployees[0], username: name }); // Adds a title row into the CSV for each company
       setMessage(currentMessage);
 
       const employees = await scrapeCompany(url);
@@ -62,11 +61,10 @@ const CompanyListContainer: React.FC<Props> = ({ companies }) => {
 
       for (const employee of employees) {
         const extraData = await getEmployee(employee.link);
-        fullData.push({ ...employee, ...extraData });
+        fullData.push({ ...employee, ...extraData, companyName: name });
 
         const primaryProgress = companyCount / companyTotal;
-        const secondaryProgress =
-          (employeeCount / employeeTotal) / companyTotal;
+        const secondaryProgress = employeeCount / employeeTotal / companyTotal;
         setProgress((primaryProgress + secondaryProgress) * 100);
 
         employeeCount++;
