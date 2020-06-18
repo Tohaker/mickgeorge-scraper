@@ -5,22 +5,6 @@ import { scrapeCompany, getEmployee } from "#/api";
 import CompanyList from "#/components/companyList";
 import ProgressTracker from "#/components/progressTracker";
 
-const defaultEmployees: Data = [
-  {
-    username: "",
-    firstName: "",
-    surname: "",
-    status: "",
-    siteName: "",
-    extension: "",
-    link: "",
-    appUserName: "",
-    deviceType: "",
-    macAddress: "",
-    directoryNumber: "",
-  },
-];
-
 const CompanyListContainer: React.FC<Props> = ({ companies }) => {
   const initialState = companies.map((state) => ({
     ...state,

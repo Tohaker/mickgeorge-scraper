@@ -35,9 +35,19 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     }
   };
 
+  const sanitizeUrl = (url: string) => {
+    if (url.slice(-1) !== "/") {
+      const result = /(.*)\//.exec(url);
+      if (result) {
+        return result[0];
+      }
+    }
+    return url;
+  };
+
   const addUrl = (newValue: string) => {
     if (newValue !== "") {
-      dispatch({ type: "ADD", payload: { newValue } });
+      dispatch({ type: "ADD", payload: { newValue: sanitizeUrl(newValue) } });
     }
   };
 

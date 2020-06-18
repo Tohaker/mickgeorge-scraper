@@ -8,6 +8,7 @@ import {
   SaveButton,
   ResetButton,
   Title,
+  Subtitle,
   InnerContainer,
 } from "./urlModal.styles";
 
@@ -39,7 +40,10 @@ const URLModal: React.FC<Props> = ({ urls, add, remove, save, reset }) => {
     <TransparentView>
       <Modal ref={ref}>
         <InnerContainer>
-          <Title>Edit your Portal URLs</Title>
+          <Title>Edit Portal URLs</Title>
+          <Subtitle>
+            Preferred format: "https://[type].[custom-name].com/businessportal/"
+          </Subtitle>
           <UrlList>
             {urls.map((url, i) => (
               <UrlAction url={url} add={add} remove={remove} key={i} />

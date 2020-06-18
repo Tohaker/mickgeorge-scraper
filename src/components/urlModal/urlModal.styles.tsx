@@ -12,7 +12,7 @@ export const TransparentView = styled.div`
 
 export const Modal = styled.div`
   margin: auto;
-  width: 40%;
+  max-width: 70%;
   background-color: white;
   border-radius: 8px;
   border: 0px;
@@ -29,6 +29,12 @@ export const InnerContainer = styled.div`
 export const Title = styled.div`
   font-size: 20px;
   margin-bottom: 4px;
+`;
+
+export const Subtitle = styled.div`
+  font-size: 16px;
+  font-style: italic;
+  margin-bottom: 8px;
 `;
 
 export const UrlList = styled.div`

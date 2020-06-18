@@ -176,12 +176,38 @@ describe("Login Container", () => {
       const emptyInput = getAllByDisplayValue("")[3];
       const addButton = getByText("+");
 
-      fireEvent.change(emptyInput, { target: { value: "test url" } });
+      fireEvent.change(emptyInput, { target: { value: "http://test-url/" } });
       fireEvent.click(addButton);
 
       expect(mockSend).toHaveBeenCalledWith("setStoreValue", {
         key: "urls",
-        value: ["url1", "url2", "test url"],
+        value: ["url1", "url2", "http://test-url/"],
+      });
+    });
+
+    it("should sanitize the url", async () => {
+      const { getByTestId, getByText, getAllByDisplayValue } = render(
+        <LoginContainer {...props} />
+      );
+
+      await waitForElement(() => getByText(/username/i));
+
+      const settingsButton = getByTestId("settings");
+      fireEvent.click(settingsButton);
+
+      await waitForElement(() => getByText(/Edit/i));
+
+      const emptyInput = getAllByDisplayValue("")[3];
+      const addButton = getByText("+");
+
+      fireEvent.change(emptyInput, {
+        target: { value: "http://test-url.com/login.jsp" },
+      });
+      fireEvent.click(addButton);
+
+      expect(mockSend).toHaveBeenCalledWith("setStoreValue", {
+        key: "urls",
+        value: ["url1", "url2", "http://test-url.com/"],
       });
     });
 
