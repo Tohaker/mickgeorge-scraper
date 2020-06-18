@@ -12,7 +12,7 @@ log.transports.file.level = "info";
 
 let chromePath =
   "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-let baseUrl = "https://hosted.mickgeorge.co.uk/businessportal/";
+let baseUrl = "https://portal.hv-select.com/businessportal/";
 let browser;
 let page;
 

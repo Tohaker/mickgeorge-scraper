@@ -24,11 +24,11 @@ function createWindow() {
   // Setup the JSON Store.
   const store = new Store({ schema });
   if (!!!store.get("urls")) {
-    store.set("urls", ["https://hosted.mickgeorge.co.uk/businessportal/"]);
+    store.set("urls", ["https://portal.hv-select.com/businessportal/"]);
   }
 
   if (!!!store.get("selectedUrl")) {
-    store.set("selectedUrl", "https://hosted.mickgeorge.co.uk/businessportal/");
+    store.set("selectedUrl", "https://portal.hv-select.com/businessportal/");
   }
 
   // Create the browser window.
