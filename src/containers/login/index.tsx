@@ -69,7 +69,7 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     setSuccess(await submitCredentials());
   };
 
-  const renderModal = () => (
+  const renderModal = (
     <URLModal
       urls={urlList}
       add={addUrl}
@@ -95,13 +95,13 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     success,
     urlList,
     selectedUrl,
+    renderModal,
     setUsername,
     setDomain,
     setPassword,
     setShowModal,
     onSubmit,
     setUrl: setSelectedUrl,
-    renderModal,
   };
 
   return <LoginComponent {...props} />;

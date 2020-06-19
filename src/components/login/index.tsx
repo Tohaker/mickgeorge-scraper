@@ -22,13 +22,13 @@ type Props = {
   urlList: Array<string>;
   selectedUrl: string;
   showModal: boolean;
+  renderModal: JSX.Element;
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   setDomain: React.Dispatch<React.SetStateAction<string>>;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (event: React.ChangeEvent<HTMLFormElement>) => void;
   setUrl: React.Dispatch<React.SetStateAction<string>>;
-  renderModal: () => JSX.Element;
 };
 
 const LoginComponent: React.FC<Props> = ({
@@ -109,7 +109,7 @@ const LoginComponent: React.FC<Props> = ({
         </form>
       )) || <div>Loading...</div>}
     </Container>
-    {showModal && renderModal()}
+    {showModal && renderModal}
   </>
 );
 

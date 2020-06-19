@@ -21,7 +21,7 @@ describe("Login Component", () => {
       setShowModal: jest.fn(),
       onSubmit: jest.fn(),
       setUrl: jest.fn(),
-      renderModal: () => <div>Modal</div>,
+      renderModal: <div>Modal</div>,
     };
     LoginComponent = require(".").default;
   });

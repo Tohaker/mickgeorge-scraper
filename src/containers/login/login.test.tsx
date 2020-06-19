@@ -156,7 +156,7 @@ describe("Login Container", () => {
       const url1 = getAllByDisplayValue("url1")[1];
       const url2 = getAllByDisplayValue("url2")[0];
 
-      expect(getByText("Edit your Portal URLs"));
+      expect(getByText("Edit Portal URLs"));
       expect(url1).toBeInTheDocument();
       expect(url2).toBeInTheDocument();
     });

@@ -13,8 +13,10 @@ type Props = {
 const UrlAction: React.FC<Props> = ({ url, add, remove, update }) => {
   const [value, setValue] = React.useState(url);
   const [editMode, setEditMode] = React.useState(false);
-  console.log("url", url);
-  console.log("value", value);
+
+  React.useEffect(() => {
+    setValue(url);
+  }, [url]);
 
   const buttonAction = url === "" ? add : remove;
   const buttonSymbol = url === "" ? "+" : "-";
@@ -33,6 +35,7 @@ const UrlAction: React.FC<Props> = ({ url, add, remove, update }) => {
       <Button
         onClick={() => {
           buttonAction(value);
+          if (url === "") setValue("");
         }}
       >
         {buttonSymbol}
