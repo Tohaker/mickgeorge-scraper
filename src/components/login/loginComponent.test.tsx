@@ -15,13 +15,13 @@ describe("Login Component", () => {
       urlList: ["url1", "url2", "url3"],
       selectedUrl: "url1",
       showModal: false,
+      renderModal: <div>Modal</div>,
       setUsername: jest.fn(),
       setDomain: jest.fn(),
       setPassword: jest.fn(),
       setShowModal: jest.fn(),
       onSubmit: jest.fn(),
       setUrl: jest.fn(),
-      renderModal: <div>Modal</div>,
     };
     LoginComponent = require(".").default;
   });

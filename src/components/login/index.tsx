@@ -40,13 +40,13 @@ const LoginComponent: React.FC<Props> = ({
   urlList,
   selectedUrl,
   showModal,
+  renderModal,
   setUsername,
   setDomain,
   setPassword,
   setShowModal,
   onSubmit,
   setUrl,
-  renderModal,
 }) => (
   <>
     <Container>
