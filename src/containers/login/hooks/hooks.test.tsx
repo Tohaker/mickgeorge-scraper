@@ -131,6 +131,27 @@ describe("Login Hooks", () => {
         });
       });
 
+      it("should send a new list when a value is updated", async () => {
+        const { result, waitForNextUpdate } = renderHook(() => useUrlList());
+
+        await waitForNextUpdate();
+
+        act(() => {
+          result.current.dispatch({
+            type: "UPDATE",
+            payload: { newValue: "url3", previousValue: "url1" },
+          });
+        });
+
+        const expected = ["url3", "url2"];
+
+        expect(result.current.urlList).toEqual(expected);
+        expect(mockSend).toBeCalledWith("setStoreValue", {
+          key: "urls",
+          value: expected,
+        });
+      });
+
       it("should reset to the original list", async () => {
         const { result, waitForNextUpdate } = renderHook(() => useUrlList());
 
