@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitForElement } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 
 describe("Company List Container", () => {
   let CompanyListContainer: React.FC<any>;
@@ -50,7 +50,7 @@ describe("Company List Container", () => {
     fireEvent.click(checkbox3);
     fireEvent.click(submitButton);
 
-    await waitForElement(() => getByText(/company3/i));
+    await waitFor(() => expect(getByText(/company3/i)).toBeInTheDocument());
 
     expect(mockScrapeCompany).toHaveBeenCalledWith("url1");
     expect(mockScrapeCompany).toHaveBeenCalledWith("url3");
@@ -77,7 +77,7 @@ describe("Company List Container", () => {
     fireEvent.click(checkbox1);
     fireEvent.click(submitButton);
 
-    await waitForElement(() => getByText(/100.0%/i));
+    await waitFor(() => expect(getByText(/100.0%/i)).toBeInTheDocument());
 
     expect(progressBar).toHaveAttribute("aria-valuenow", "100");
   });

@@ -3,7 +3,7 @@ import { createMemoryHistory } from "history";
 import {
   render,
   fireEvent,
-  waitForElement,
+  waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 
@@ -77,7 +77,9 @@ describe("Login Container", () => {
           fireEvent.change(passwordInput, { target: { value: "password" } });
           fireEvent.submit(getByTestId("form"));
 
-          await waitForElement(() => getByText(/Loading.../i));
+          await waitFor(() =>
+            expect(getByText(/Loading.../i)).toBeInTheDocument()
+          );
 
           expect(mockLogin).toBeCalledWith("username", "domain", "password");
           expect(usernameInput).not.toBeInTheDocument();
@@ -146,12 +148,12 @@ describe("Login Container", () => {
         <LoginContainer {...props} />
       );
 
-      await waitForElement(() => getByText(/username/i));
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
 
-      await waitForElement(() => getByText(/Edit/i));
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
 
       const url1 = getAllByDisplayValue("url1")[1];
       const url2 = getAllByDisplayValue("url2")[0];
@@ -166,12 +168,12 @@ describe("Login Container", () => {
         <LoginContainer {...props} />
       );
 
-      await waitForElement(() => getByText(/username/i));
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
 
-      await waitForElement(() => getByText(/Edit/i));
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
 
       const emptyInput = getAllByDisplayValue("")[3];
       const addButton = getByText("+");
@@ -190,12 +192,12 @@ describe("Login Container", () => {
         <LoginContainer {...props} />
       );
 
-      await waitForElement(() => getByText(/username/i));
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
 
-      await waitForElement(() => getByText(/Edit/i));
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
 
       const emptyInput = getAllByDisplayValue("")[3];
       const addButton = getByText("+");
@@ -216,12 +218,12 @@ describe("Login Container", () => {
         <LoginContainer {...props} />
       );
 
-      await waitForElement(() => getByText(/username/i));
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
 
-      await waitForElement(() => getByText(/Edit/i));
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
 
       const removeButton = getAllByText("-")[0];
 
@@ -233,15 +235,45 @@ describe("Login Container", () => {
       });
     });
 
-    it("should reset to the starting value when reset is pressed", async () => {
-      const { getByTestId, getByText } = render(<LoginContainer {...props} />);
+    it("should update the store when a url is updated", async () => {
+      const {
+        getByTestId,
+        getAllByDisplayValue,
+        getAllByAltText,
+        getByText,
+      } = render(<LoginContainer {...props} />);
 
-      await waitForElement(() => getByText(/username/i));
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
 
-      await waitForElement(() => getByText(/Edit/i));
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
+
+      const editButton = getAllByAltText("Edit")[0];
+      const textBox = getAllByDisplayValue("url1")[1];
+
+      fireEvent.click(editButton);
+      await waitFor(() => expect(textBox).not.toHaveAttribute("readOnly"));
+
+      fireEvent.change(textBox, { target: { value: "url3" } });
+      fireEvent.click(editButton);
+
+      expect(mockSend).toHaveBeenCalledWith("setStoreValue", {
+        key: "urls",
+        value: ["url3", "url2"],
+      });
+    });
+
+    it("should reset to the starting value when reset is pressed", async () => {
+      const { getByTestId, getByText } = render(<LoginContainer {...props} />);
+
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
+
+      const settingsButton = getByTestId("settings");
+      fireEvent.click(settingsButton);
+
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
 
       const resetButton = getByText("Reset");
       fireEvent.click(resetButton);
@@ -255,12 +287,12 @@ describe("Login Container", () => {
     it("should close the modal when save is clicked", async () => {
       const { getByTestId, getByText } = render(<LoginContainer {...props} />);
 
-      await waitForElement(() => getByText(/username/i));
+      await waitFor(() => expect(getByText(/username/i)).toBeInTheDocument());
 
       const settingsButton = getByTestId("settings");
       fireEvent.click(settingsButton);
 
-      await waitForElement(() => getByText(/Edit/i));
+      await waitFor(() => expect(getByText(/Edit/i)).toBeInTheDocument());
 
       const saveButton = getByText("Save");
       fireEvent.click(saveButton);
