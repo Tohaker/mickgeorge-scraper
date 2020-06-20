@@ -27,7 +27,7 @@ jobs:
   release:
     needs: test
     runs-on: windows-latest
-    if: github.ref == 'ref/head/v*'
+    if: contains(github.ref, "v")
     steps:
       - uses: actions/checkout@v2
 
