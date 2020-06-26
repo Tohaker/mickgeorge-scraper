@@ -6,9 +6,8 @@ describe("Progress Tracker", () => {
   const data = [
     {
       username: "username",
+      name: "firstname surname",
       status: "status",
-      firstName: "firstName",
-      surname: "surname",
       extension: "ext",
       siteName: "site",
       link: "link",
@@ -16,10 +15,16 @@ describe("Progress Tracker", () => {
       deviceType: "deviceType",
       macAddress: "macAddress",
       directoryNumber: "directoryNumber",
+      companyName: "company",
     },
   ];
 
   beforeEach(() => jest.resetAllMocks());
+
+  it("should match snapshot", () => {
+    const { container } = render(<ProgressTracker current={0} data={data} />);
+    expect(container).toMatchSnapshot();
+  });
 
   it("should render with a progress bar and no messages", () => {
     const { getByRole } = render(<ProgressTracker current={20} data={data} />);

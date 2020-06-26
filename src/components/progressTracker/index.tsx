@@ -11,16 +11,16 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const headers = [
-  { label: "Username", key: "username" },
-  { label: "Status", key: "status" },
-  { label: "First Name", key: "firstName" },
-  { label: "Last Name", key: "surname" },
+  { label: "Name", key: "name" },
+  { label: "Extension", key: "extension" },
+  { label: "Phone Number", key: "directoryNumber" },
   { label: "Application Username", key: "appUserName" },
   { label: "Device Type", key: "deviceType" },
   { label: "MAC Address", key: "macAddress" },
-  { label: "Phone Number", key: "directoryNumber" },
-  { label: "Extension", key: "extension" },
+  { label: "Username", key: "username" },
+  { label: "Status", key: "status" },
   { label: "Site name", key: "siteName" },
+  { label: "Company Name", key: "companyName" },
 ];
 
 const ProgressTracker: React.FC<Props> = ({
