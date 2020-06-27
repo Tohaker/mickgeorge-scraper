@@ -88,4 +88,32 @@ describe("Login Component", () => {
 
     expect(getByText("Modal")).toBeInTheDocument();
   });
+
+  describe("given the password show/hide button", () => {
+    let passButton: HTMLElement;
+    let passwordBox: HTMLElement;
+
+    beforeEach(() => {
+      const { getByText, getByLabelText } = render(
+        <LoginComponent {...props} />
+      );
+      passButton = getByText("Show");
+      passwordBox = getByLabelText(/password/i);
+    });
+
+    it("should render as Show", () => {
+      expect(passButton).toBeInTheDocument();
+    });
+
+    it("should render as Hide when clicked", () => {
+      fireEvent.click(passButton);
+      expect(passButton.innerHTML).toBe("Hide");
+    });
+
+    it("should change the password input type when clicked", () => {
+      expect(passwordBox).toHaveAttribute("type", "password");
+      fireEvent.click(passButton);
+      expect(passwordBox).toHaveAttribute("type", "text");
+    });
+  });
 });

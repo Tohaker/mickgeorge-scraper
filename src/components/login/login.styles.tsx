@@ -30,6 +30,8 @@ export const Input = styled.input`
   border-radius: 4px;
   height: 28px;
   padding: 6px 12px;
+
+  width: 100%;
 `;
 
 export const LoginButton = styled.button`
@@ -83,4 +85,9 @@ export const PortalSelect = styled.select`
   border-radius: 4px;
   height: 28px;
   width: 100%;
+`;
+
+export const PasswordContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `;

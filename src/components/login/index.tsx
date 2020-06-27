@@ -9,6 +9,7 @@ import {
   PortalContainer,
   PortalSelect,
   SettingsButton,
+  PasswordContainer,
 } from "./login.styles";
 
 import { ReactComponent as CogIcon } from "#/assets/cog.svg";
@@ -47,70 +48,78 @@ const LoginComponent: React.FC<Props> = ({
   setShowModal,
   onSubmit,
   setUrl,
-}) => (
-  <>
-    <Container>
-      {(!loading && (
-        <form onSubmit={onSubmit} data-testid="form">
-          <LoginPane>
-            <Label>Portal URL</Label>
-            <PortalContainer>
-              <PortalSelect
-                onChange={(e) => setUrl(e.target.selectedOptions[0].text)}
-                value={selectedUrl}
-              >
-                {urlList.map((url, i) => (
-                  <option value={url} key={i}>
-                    {url}
-                  </option>
-                ))}
-              </PortalSelect>
-              <SettingsButton
-                data-testid="settings"
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowModal(true);
-                }}
-              >
-                <CogIcon />
-              </SettingsButton>
-            </PortalContainer>
-            <Label>Username</Label>
-            <Input
-              type="text"
-              aria-label="username"
-              value={username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setUsername(e.target.value)
-              }
-            />
-            <Label>Domain</Label>
-            <Input
-              type="text"
-              aria-label="domain"
-              value={domain}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setDomain(e.target.value)
-              }
-            />
-            <Label>Password</Label>
-            <Input
-              type="password"
-              aria-label="password"
-              value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
-            />
-            <LoginButton type="submit">Login</LoginButton>
-            {!success && <FailureMessage>Incorrect Login</FailureMessage>}
-          </LoginPane>
-        </form>
-      )) || <div>Loading...</div>}
-    </Container>
-    {showModal && renderModal}
-  </>
-);
+}) => {
+  const [showPassword, setShowPassword] = React.useState(false);
+  return (
+    <>
+      <Container>
+        {(!loading && (
+          <form onSubmit={onSubmit} data-testid="form">
+            <LoginPane>
+              <Label>Portal URL</Label>
+              <PortalContainer>
+                <PortalSelect
+                  onChange={(e) => setUrl(e.target.selectedOptions[0].text)}
+                  value={selectedUrl}
+                >
+                  {urlList.map((url, i) => (
+                    <option value={url} key={i}>
+                      {url}
+                    </option>
+                  ))}
+                </PortalSelect>
+                <SettingsButton
+                  data-testid="settings"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowModal(true);
+                  }}
+                >
+                  <CogIcon />
+                </SettingsButton>
+              </PortalContainer>
+              <Label>Username</Label>
+              <Input
+                type="text"
+                aria-label="username"
+                value={username}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setUsername(e.target.value)
+                }
+              />
+              <Label>Domain</Label>
+              <Input
+                type="text"
+                aria-label="domain"
+                value={domain}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setDomain(e.target.value)
+                }
+              />
+              <Label>Password</Label>
+              <PasswordContainer>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  aria-label="password"
+                  value={password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                  }
+                />
+                <button onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </PasswordContainer>
+              <LoginButton type="submit">Login</LoginButton>
+              {!success && <FailureMessage>Incorrect Login</FailureMessage>}
+            </LoginPane>
+          </form>
+        )) || <div>Loading...</div>}
+      </Container>
+      {showModal && renderModal}
+    </>
+  );
+};
 
 export default LoginComponent;
