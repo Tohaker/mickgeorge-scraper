@@ -10,6 +10,7 @@ import {
   PortalSelect,
   SettingsButton,
   InlineContainer,
+  Checkbox,
   CredentialsCheck,
 } from "./login.styles";
 
@@ -117,7 +118,7 @@ const LoginComponent: React.FC<Props> = ({
                 </button>
               </InlineContainer>
               <CredentialsCheck>
-                <Input
+                <Checkbox
                   type="checkbox"
                   aria-label="save"
                   checked={save}

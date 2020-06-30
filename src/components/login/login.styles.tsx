@@ -93,6 +93,10 @@ export const InlineContainer = styled.div`
   flex-direction: row;
 `;
 
+export const Checkbox = styled(Input)`
+  width: auto;
+`;
+
 export const CredentialsCheck = styled(InlineContainer)`
   margin: 4px auto 0 0;
 `;
