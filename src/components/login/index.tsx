@@ -9,7 +9,8 @@ import {
   PortalContainer,
   PortalSelect,
   SettingsButton,
-  PasswordContainer,
+  InlineContainer,
+  CredentialsCheck,
 } from "./login.styles";
 
 import { ReactComponent as CogIcon } from "#/assets/cog.svg";
@@ -18,6 +19,7 @@ type Props = {
   username?: string;
   domain?: string;
   password?: string;
+  save?: boolean;
   loading: boolean;
   success: boolean;
   urlList: Array<string>;
@@ -27,6 +29,7 @@ type Props = {
   setUsername: React.Dispatch<React.SetStateAction<string>>;
   setDomain: React.Dispatch<React.SetStateAction<string>>;
   setPassword: React.Dispatch<React.SetStateAction<string>>;
+  setSave: React.Dispatch<React.SetStateAction<boolean>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: (event: React.ChangeEvent<HTMLFormElement>) => void;
   setUrl: React.Dispatch<React.SetStateAction<string>>;
@@ -36,6 +39,7 @@ const LoginComponent: React.FC<Props> = ({
   username,
   domain,
   password,
+  save,
   loading,
   success,
   urlList,
@@ -45,6 +49,7 @@ const LoginComponent: React.FC<Props> = ({
   setUsername,
   setDomain,
   setPassword,
+  setSave,
   setShowModal,
   onSubmit,
   setUrl,
@@ -98,7 +103,7 @@ const LoginComponent: React.FC<Props> = ({
                 }
               />
               <Label>Password</Label>
-              <PasswordContainer>
+              <InlineContainer>
                 <Input
                   type={showPassword ? "text" : "password"}
                   aria-label="password"
@@ -110,7 +115,16 @@ const LoginComponent: React.FC<Props> = ({
                 <button onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? "Hide" : "Show"}
                 </button>
-              </PasswordContainer>
+              </InlineContainer>
+              <CredentialsCheck>
+                <Input
+                  type="checkbox"
+                  aria-label="save"
+                  checked={save}
+                  onChange={() => setSave(!save)}
+                />
+                <Label style={{ marginLeft: "4px" }}>Save credentials</Label>
+              </CredentialsCheck>
               <LoginButton type="submit">Login</LoginButton>
               {!success && <FailureMessage>Incorrect Login</FailureMessage>}
             </LoginPane>

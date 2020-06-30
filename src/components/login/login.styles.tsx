@@ -23,6 +23,7 @@ export const LoginPane = styled.div`
 export const Label = styled.label`
   font-weight: bold;
   margin: 4px 0;
+  white-space: nowrap;
 `;
 
 export const Input = styled.input`
@@ -87,7 +88,11 @@ export const PortalSelect = styled.select`
   width: 100%;
 `;
 
-export const PasswordContainer = styled.div`
+export const InlineContainer = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+export const CredentialsCheck = styled(InlineContainer)`
+  margin: 4px auto 0 0;
 `;

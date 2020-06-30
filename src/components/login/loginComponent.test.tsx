@@ -10,6 +10,7 @@ describe("Login Component", () => {
       username: "username",
       domain: "domain",
       password: "password",
+      save: false,
       loading: false,
       success: true,
       urlList: ["url1", "url2", "url3"],
@@ -19,6 +20,7 @@ describe("Login Component", () => {
       setUsername: jest.fn(),
       setDomain: jest.fn(),
       setPassword: jest.fn(),
+      setSave: jest.fn(),
       setShowModal: jest.fn(),
       onSubmit: jest.fn(),
       setUrl: jest.fn(),
@@ -39,6 +41,7 @@ describe("Login Component", () => {
     const usernameInput = getByRole("textbox", { name: /username/i });
     const domainInput = getByRole("textbox", { name: /domain/i });
     const passwordInput = getByLabelText(/password/i);
+    const saveInput = getByRole("checkbox");
     const loginButton = getByRole("button", { name: /Login/i });
 
     expect(portalSelect).toBeInTheDocument();
@@ -47,6 +50,7 @@ describe("Login Component", () => {
     expect(usernameInput).toBeInTheDocument();
     expect(domainInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
+    expect(saveInput).toBeInTheDocument();
     expect(loginButton).toBeInTheDocument();
   });
 
@@ -114,6 +118,24 @@ describe("Login Component", () => {
       expect(passwordBox).toHaveAttribute("type", "password");
       fireEvent.click(passButton);
       expect(passwordBox).toHaveAttribute("type", "text");
+    });
+  });
+
+  describe("given the save checkbox", () => {
+    let saveBox: HTMLInputElement;
+
+    beforeEach(() => {
+      const { getByRole } = render(<LoginComponent {...props} />);
+      saveBox = getByRole("checkbox") as HTMLInputElement;
+    });
+
+    it("should render unchecked", () => {
+      expect(saveBox.checked).toBeFalsy();
+    });
+
+    it("should call setSave when checked", () => {
+      fireEvent.click(saveBox);
+      expect(props.setSave).toBeCalledTimes(1);
     });
   });
 });

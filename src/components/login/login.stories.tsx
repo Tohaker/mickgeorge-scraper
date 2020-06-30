@@ -12,6 +12,7 @@ const Container = (props) => {
   const [username, setUsername] = React.useState("");
   const [domain, setDomain] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [save, setSave] = React.useState(false);
 
   return (
     <Login
@@ -21,6 +22,8 @@ const Container = (props) => {
       setDomain={setDomain}
       password={password}
       setPassword={setPassword}
+      save={save}
+      setSave={setSave}
       {...props}
     />
   );
