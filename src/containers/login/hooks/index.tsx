@@ -98,3 +98,54 @@ export const useUrlList = () => {
     dispatch,
   };
 };
+
+export const useCredentials = () => {
+  const [username, setUsername] = React.useState("");
+  const [domain, setDomain] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [save, setSave] = React.useState(false);
+
+  React.useEffect(() => {
+    (async () => {
+      const initialUsername: string = await ipcRenderer.invoke(
+        "getStoreValue",
+        "username"
+      );
+      initialUsername && setUsername(initialUsername);
+      const initialDomain: string = await ipcRenderer.invoke(
+        "getStoreValue",
+        "domain"
+      );
+      initialDomain && setDomain(initialDomain);
+    })();
+  }, []);
+
+  React.useEffect(() => {
+    if (save) {
+      if (username !== "") {
+        ipcRenderer.send("setStoreValue", {
+          key: "username",
+          value: username,
+        });
+      }
+
+      if (domain !== "") {
+        ipcRenderer.send("setStoreValue", {
+          key: "domain",
+          value: domain,
+        });
+      }
+    }
+  }, [save, username, domain]);
+
+  return {
+    username,
+    domain,
+    password,
+    save,
+    setUsername,
+    setDomain,
+    setPassword,
+    setSave,
+  };
+};

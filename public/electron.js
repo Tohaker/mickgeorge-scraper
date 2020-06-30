@@ -18,6 +18,12 @@ const schema = {
   selectedUrl: {
     type: "string",
   },
+  username: {
+    type: "string",
+  },
+  domain: {
+    type: "string",
+  },
 };
 
 function createWindow() {

@@ -3,12 +3,9 @@ import LoginComponent from "#/components/login";
 import URLModal from "#/components/urlModal";
 import { login, setPortalUrl } from "#/api";
 import { LoginProps } from "./login.types";
-import { useLoading, useUrlList } from "./hooks";
+import { useLoading, useUrlList, useCredentials } from "./hooks";
 
 const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
-  const [username, setUsername] = React.useState("");
-  const [domain, setDomain] = React.useState("");
-  const [password, setPassword] = React.useState("");
   const [showModal, setShowModal] = React.useState(false);
 
   const {
@@ -19,6 +16,16 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     dispatch,
   } = useUrlList();
   const { loading, success, setLoading, setSuccess } = useLoading();
+  const {
+    username,
+    domain,
+    password,
+    save,
+    setUsername,
+    setDomain,
+    setPassword,
+    setSave,
+  } = useCredentials();
 
   const submitCredentials = async () => {
     if (setPortalUrl(selectedUrl)) {
@@ -90,6 +97,7 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     username,
     domain,
     password,
+    save,
     showModal,
     loading,
     success,
@@ -99,6 +107,7 @@ const LoginContainer: React.FC<LoginProps> = ({ setCompanies, history }) => {
     setUsername,
     setDomain,
     setPassword,
+    setSave,
     setShowModal,
     onSubmit,
     setUrl: setSelectedUrl,

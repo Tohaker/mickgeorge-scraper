@@ -3,6 +3,7 @@ import { renderHook, act } from "@testing-library/react-hooks";
 describe("Login Hooks", () => {
   let useLoading: () => any;
   let useUrlList: () => any;
+  let useCredentials: () => any;
 
   const mockSend = jest.fn();
   const mockInvoke = jest.fn();
@@ -21,6 +22,7 @@ describe("Login Hooks", () => {
 
     useLoading = require(".").useLoading;
     useUrlList = require(".").useUrlList;
+    useCredentials = require(".").useCredentials;
   });
 
   describe("useLoading", () => {
@@ -172,6 +174,94 @@ describe("Login Hooks", () => {
           value: initialList,
         });
       });
+    });
+  });
+
+  describe("useCredentials", () => {
+    it("should get the initial username and domain from ipcRenderer", async () => {
+      mockInvoke.mockReturnValueOnce("username");
+      mockInvoke.mockReturnValueOnce("domain");
+
+      const { result, waitForNextUpdate } = renderHook(() => useCredentials());
+
+      await waitForNextUpdate();
+
+      expect(mockInvoke).toBeCalledWith("getStoreValue", "username");
+      expect(mockInvoke).toBeCalledWith("getStoreValue", "domain");
+      expect(mockInvoke).toBeCalledTimes(2);
+
+      expect(result.current.username).toBe("username");
+      expect(result.current.domain).toBe("domain");
+      expect(result.current.password).toBe("");
+    });
+
+    it("should save the current values", () => {
+      const { result } = renderHook(() => useCredentials());
+
+      expect(result.current.username).toBe("");
+      expect(result.current.domain).toBe("");
+      expect(result.current.password).toBe("");
+
+      act(() => {
+        result.current.setUsername("user1");
+        result.current.setDomain("domain.com");
+        result.current.setPassword("password123");
+        result.current.setSave(true);
+      });
+
+      expect(mockSend).toBeCalledWith("setStoreValue", {
+        key: "username",
+        value: "user1",
+      });
+      expect(mockSend).toBeCalledWith("setStoreValue", {
+        key: "domain",
+        value: "domain.com",
+      });
+    });
+
+    it("should update credentials whenever save is ticked", () => {
+      const { result } = renderHook(() => useCredentials());
+
+      expect(result.current.username).toBe("");
+      expect(result.current.domain).toBe("");
+      expect(result.current.password).toBe("");
+
+      act(() => {
+        result.current.setSave(true);
+      });
+
+      expect(mockSend).not.toBeCalled();
+
+      act(() => {
+        result.current.setUsername("user1");
+        result.current.setDomain("domain.com");
+        result.current.setPassword("password123");
+      });
+
+      expect(mockSend).toBeCalledWith("setStoreValue", {
+        key: "username",
+        value: "user1",
+      });
+      expect(mockSend).toBeCalledWith("setStoreValue", {
+        key: "domain",
+        value: "domain.com",
+      });
+    });
+
+    it("should not update credentials whenever save is not ticked", () => {
+      const { result } = renderHook(() => useCredentials());
+
+      expect(result.current.username).toBe("");
+      expect(result.current.domain).toBe("");
+      expect(result.current.password).toBe("");
+
+      act(() => {
+        result.current.setUsername("user1");
+        result.current.setDomain("domain.com");
+        result.current.setPassword("password123");
+      });
+
+      expect(mockSend).not.toBeCalled();
     });
   });
 });
