@@ -113,7 +113,12 @@ const LoginComponent: React.FC<Props> = ({
                     setPassword(e.target.value)
                   }
                 />
-                <button onClick={() => setShowPassword(!showPassword)}>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowPassword(!showPassword);
+                  }}
+                >
                   {showPassword ? "Hide" : "Show"}
                 </button>
               </InlineContainer>
