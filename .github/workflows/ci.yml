@@ -24,6 +24,9 @@ jobs:
       - name: Test application
         run: yarn test
 
+      - name: Integration tests
+        run: yarn integration
+
   release:
     needs: test
     runs-on: windows-latest
