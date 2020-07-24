@@ -81,10 +81,11 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test --env=jsdom-fourteen",
+    "integration": "mocha",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "electron-dev-win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
-    "electron-dev-unix": "ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "electron-dev-win": "set ELECTRON_START_URL=http://localhost:3000 && yarn electron",
+    "electron-dev-unix": "ELECTRON_START_URL=http://localhost:3000 && yarn electron",
     "pack": "electron-builder --dir",
     "predist": "yarn build",
     "dist": "electron-builder --win",
@@ -120,6 +121,8 @@
     "electron-builder": "^22.7.0",
     "electron-devtools-installer": "^3.0.0",
     "fetch-mock": "^9.10.1",
-    "react-test-renderer": "^16.13.1"
+    "mocha": "^8.0.1",
+    "react-test-renderer": "^16.13.1",
+    "spectron": "^11.1.0"
   }
 }
