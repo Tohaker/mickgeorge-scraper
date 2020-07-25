@@ -109,15 +109,22 @@ describe("Login Component", () => {
       expect(passButton).toBeInTheDocument();
     });
 
-    it("should render as Hide when clicked", () => {
-      fireEvent.click(passButton);
-      expect(passButton.innerHTML).toBe("Hide");
-    });
+    describe("given the button is clicked", () => {
+      it("should render as Hide when clicked", () => {
+        fireEvent.click(passButton);
+        expect(passButton.innerHTML).toBe("Hide");
+      });
 
-    it("should change the password input type when clicked", () => {
-      expect(passwordBox).toHaveAttribute("type", "password");
-      fireEvent.click(passButton);
-      expect(passwordBox).toHaveAttribute("type", "text");
+      it("should change the password input type when clicked", () => {
+        expect(passwordBox).toHaveAttribute("type", "password");
+        fireEvent.click(passButton);
+        expect(passwordBox).toHaveAttribute("type", "text");
+      });
+
+      it("should NOT submit the form", () => {
+        fireEvent.click(passButton);
+        expect(props.onSubmit).not.toHaveBeenCalled();
+      });
     });
   });
 

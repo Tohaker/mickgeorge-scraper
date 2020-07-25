@@ -51,6 +51,9 @@ describe("Login Page", function () {
             .getText()
             .then((text) => assert(expectedHeadings.includes(text)));
         })
-      );
+      )
+      .catch((error) => {
+        assert.fail(error);
+      });
   });
 });
