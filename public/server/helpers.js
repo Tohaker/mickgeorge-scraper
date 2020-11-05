@@ -50,7 +50,7 @@ async function getServiceSettings(page) {
 }
 
 async function getFeatures(page) {
-  const voiceRecording = (await page.content()).match("Voice Recording")[0];
+  const voiceRecording = (await page.content()).match("Voice Recording");
   
   return {
     voiceRecording

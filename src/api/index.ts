@@ -37,7 +37,7 @@ export type Employee = {
   extension: string;
   siteName: string;
   link: string;
-  voiceRecording: string;
+  voiceRecording: Array<string | null>;
 };
 
 export const scrapeCompany = (companyUrl: string): Promise<Array<Employee>> => {
