@@ -16,6 +16,7 @@ describe("Progress Tracker", () => {
       macAddress: "macAddress",
       directoryNumber: "directoryNumber",
       companyName: "company",
+      voiceRecording: "Voice Recording"
     },
   ];
 

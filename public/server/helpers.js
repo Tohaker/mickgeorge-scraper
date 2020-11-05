@@ -49,9 +49,18 @@ async function getServiceSettings(page) {
   };
 }
 
+async function getFeatures(page) {
+  const voiceRecording = (await page.content()).match("Voice Recording")[0];
+  
+  return {
+    voiceRecording
+  }
+}
+
 module.exports = {
   nextPage,
   clickSearchButton,
   getApplicationUsername,
   getServiceSettings,
+  getFeatures
 };

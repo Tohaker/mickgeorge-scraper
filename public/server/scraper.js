@@ -6,6 +6,7 @@ const {
   clickSearchButton,
   getApplicationUsername,
   getServiceSettings,
+  getFeatures
 } = require("./helpers");
 
 log.transports.file.level = "info";
@@ -160,6 +161,7 @@ async function getEmployeeDetails(url) {
 
   const appSelector = '//a/span[text()[contains(., "Applications")]]';
   const serviceSelector = '//a/span[text()[contains(., "Service Settings")]]';
+  const featureSelector = '//a/span[text()[contains(., "Features")]]';
 
   await page.waitForXPath(appSelector);
   const applicationsBtn = (await page.$x(appSelector))[0];
@@ -175,7 +177,14 @@ async function getEmployeeDetails(url) {
   await page.waitForNavigation({ waitUntil: "domcontentloaded" });
   const serviceSettings = await getServiceSettings(page);
 
-  return { appUserName, ...serviceSettings };
+  await page.waitForXPath(featureSelector);
+  const featuresBtn = (await page.$x(featureSelector))[0];
+
+  await featuresBtn.click();
+  await page.waitForNavigation({ waitUntil: "domcontentloaded" });
+  const features = await getFeatures(page);
+
+  return { appUserName, ...serviceSettings, ...features };
 }
 
 module.exports = {

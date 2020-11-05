@@ -32,8 +32,8 @@ exports[`Progress Tracker should match snapshot 1`] = `
       class="sc-AxhCb iUFMti"
       disabled=""
       download="export_data.csv"
-      href="data:text/csv;charset=utf-8,﻿\\"Name\\",\\"Extension\\",\\"Phone Number\\",\\"Application Username\\",\\"Device Type\\",\\"MAC Address\\",\\"Username\\",\\"Status\\",\\"Site name\\",\\"Company Name\\"
-\\"firstname surname\\",\\"ext\\",\\"directoryNumber\\",\\"appUserName\\",\\"deviceType\\",\\"macAddress\\",\\"username\\",\\"status\\",\\"site\\",\\"company\\""
+      href="data:text/csv;charset=utf-8,﻿\\"Name\\",\\"Extension\\",\\"Phone Number\\",\\"Application Username\\",\\"Device Type\\",\\"MAC Address\\",\\"Username\\",\\"Status\\",\\"Site name\\",\\"Company Name\\",\\"Voice Recording\\"
+\\"firstname surname\\",\\"ext\\",\\"directoryNumber\\",\\"appUserName\\",\\"deviceType\\",\\"macAddress\\",\\"username\\",\\"status\\",\\"site\\",\\"company\\",\\"Voice Recording\\""
       target="_self"
     >
       Export to CSV

@@ -21,6 +21,7 @@ const headers = [
   { label: "Status", key: "status" },
   { label: "Site name", key: "siteName" },
   { label: "Company Name", key: "companyName" },
+  { label: "Voice Recording", key: "voiceRecording"}
 ];
 
 const ProgressTracker: React.FC<Props> = ({
