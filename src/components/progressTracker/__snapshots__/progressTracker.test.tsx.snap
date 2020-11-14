@@ -3,7 +3,7 @@
 exports[`Progress Tracker should match snapshot 1`] = `
 <div>
   <div
-    class="sc-AxjAm dMLfiA"
+    class="sc-bdfBwQ iMRMsF"
   >
     <div
       class="progress"
@@ -20,16 +20,16 @@ exports[`Progress Tracker should match snapshot 1`] = `
       </div>
     </div>
     <div
-      class="sc-AxirZ hxNsdT"
+      class="sc-gsTCUz cxqnbh"
     >
       Details:
     </div>
     <textarea
-      class="sc-AxiKw dAGOGL"
+      class="sc-dlfnbm ePegbC"
       readonly=""
     />
     <a
-      class="sc-AxhCb iUFMti"
+      class="sc-hKgILt eYMeGx"
       disabled=""
       download="export_data.csv"
       href="data:text/csv;charset=utf-8,﻿\\"Name\\",\\"Extension\\",\\"Phone Number\\",\\"Application Username\\",\\"Device Type\\",\\"MAC Address\\",\\"Username\\",\\"Status\\",\\"Site name\\",\\"Company Name\\",\\"Voice Recording\\"
