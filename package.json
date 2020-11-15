@@ -80,7 +80,6 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test --env=jsdom-fourteen",
-    "integration": "mocha",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "electron-dev-win": "set ELECTRON_START_URL=http://localhost:3000 && yarn electron",
