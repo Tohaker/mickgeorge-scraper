@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer-core");
 const log = require("electron-log");
 const promiseRetry = require("promise-retry");
+const fs = require('fs')
 const {
   nextPage,
   clickSearchButton,
@@ -11,11 +12,23 @@ const {
 
 log.transports.file.level = "info";
 
-let chromePath =
-  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+const chromePaths = [
+  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+];
 let baseUrl = "https://portal.hv-select.com/businessportal/";
 let browser;
 let page;
+
+function getChromePath() {
+  for (let i = 0; i < chromePaths.length; i++) {
+    if (fs.existsSync(chromePaths[i])) {
+      return chromePaths[i];
+    }
+  }
+
+  return chromePaths[0];
+}
 
 async function setBaseUrl(url) {
   baseUrl = url;
@@ -23,7 +36,7 @@ async function setBaseUrl(url) {
 
 async function startBrowser() {
   browser = await puppeteer.launch({
-    executablePath: chromePath,
+    executablePath: getChromePath(),
     headless: true,
   });
   page = await browser.newPage();
